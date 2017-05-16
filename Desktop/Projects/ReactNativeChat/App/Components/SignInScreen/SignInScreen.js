@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -24,11 +23,11 @@ class SignInScreen extends Component {
         <View style={{ flexDirection: 'row' }}>
           <LogInForm />
         </View>
-        <View style={ styles.otherBtn }>
-          <TouchableOpacity>
+        <View>
+          <TouchableOpacity onPress={ () => this.props.navigator.replace({ id: 'signUpScreen' }) }>
           <Text style={ styles.btnTxt }>Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={ () => this.props.navigator.replace({ id: 'forgotPassword' }) }>
           <Text style={ styles.btnTxt }>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -42,7 +41,9 @@ export default SignInScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   logoContainer: {
     alignSelf: 'center',
@@ -59,9 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     color: '#E5CD25'
-  },
-  otherBtn: {
-
   },
   btnTxt: {
     color: '#fff',

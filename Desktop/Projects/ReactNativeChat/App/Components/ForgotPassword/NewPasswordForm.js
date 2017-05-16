@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
+  Text,
   View,
   TextInput,
-  TouchableOpacity,
-  Text
+  TouchableOpacity
 } from 'react-native';
 
-class LogInForm extends Component {
+class NewPasswordForm extends Component {
 
   constructor(props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
+    this.getNewPass = this.getNewPass.bind(this);
 
     this.state = {
-      email: null,
-      password: null
+      email: null
     }
   }
 
-  onChange(fieldName, val) {
-    this.setState({ [fieldName]: val })
+  getNewPass(email) {
+    if(email) {
+      this.setState({ email: null })
+    } else {
+      console.warn('Check e-mail field!')
+    }
+  }
+
+  onChange(val) {
+    this.setState({ email: val })
   }
 
   render() {
@@ -31,31 +39,28 @@ class LogInForm extends Component {
           style={ styles.input }
           placeholder='E-mail'
           underlineColorAndroid='transparent'
-          onChange={ (e) => this.onChange('email', e.nativeEvent.text) }
-        />
-        <TextInput
-          style={ styles.input }
-          placeholder='Password'
-          underlineColorAndroid='transparent'
-          secureTextEntry
-          onChange={ (e) => this.onChange('password', e.nativeEvent.text) }
+          onChange={ (e) => this.onChange(e.nativeEvent.text) }
+          value={ this.state.email }
         />
         <TouchableOpacity
           style={ styles.btn }
+          onPress={ () => this.getNewPass(this.state.email) }
         >
-          <Text style={ styles.btnTxt }>SIGN IN</Text>
+          <Text style={ styles.btnTxt }>SEND</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={ () => this.props.navigator.replace({ id: 'signInScreen' }) }>
+            <Text style={ styles.btnTxt }>Already Account?</Text>
+          </TouchableOpacity>
       </View>
     )
   }
 }
 
-export default LogInForm;
+export default NewPasswordForm;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 10
   },
   input: {
     backgroundColor: 'rgba(255,255,255, 0.8)',
@@ -70,7 +75,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#E5CD25',
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 10
   },
   btnTxt: {
     color: '#fff',

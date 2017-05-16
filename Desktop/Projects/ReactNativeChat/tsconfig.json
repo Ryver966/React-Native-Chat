@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "isolatedModules": false,
+    "jsx": "react",
+    "emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "./dist/",
+    "allowJs": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
