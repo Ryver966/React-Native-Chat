@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
+import { apiSignUp } from '../../ActionsAPI/actions';
 
 class RegisterForm extends Component {
 
@@ -26,12 +27,18 @@ class RegisterForm extends Component {
 
   signUp(email, name, pass, confPass) {
     if(email && name && pass && pass === confPass) {
-      this.setState({
-        email: null,
-        name: null,
-        password: null,
-        confPassword: null
-      })
+      apiSignUp(email, name, pass)
+        .then(() => {
+          this.setState({
+            email: null,
+            name: null,
+            password: null,
+            confPassword: null
+          })
+        })
+        .catch(() => {
+          console.warn('Something gone wrong!')
+        })
     } else {
       console.warn('Check all fields!')
     }
