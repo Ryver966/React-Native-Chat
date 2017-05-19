@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native';
+import { authUser } from '../../../server/actions/actions';
 
 class LogInForm extends Component {
 
@@ -13,10 +14,31 @@ class LogInForm extends Component {
     super(props);
 
     this.onChange = this.onChange.bind(this);
+    this.signIn = this.signIn.bind(this);
 
     this.state = {
       email: null,
       password: null
+    }
+  }
+
+  signIn(_email, _password) {
+    if(_email && _password) {
+      authUser({ 
+        email: _email,
+        password: _password,
+      })
+        .then(() => {
+          this.setState({
+            email: null,
+            password: null
+          })
+        })
+        .catch(() => {
+          console.warn('Something gone wrong!')
+        })
+    } else {
+      console.warn('Check all fields!')
     }
   }
 
@@ -32,6 +54,7 @@ class LogInForm extends Component {
           placeholder='E-mail'
           underlineColorAndroid='transparent'
           onChange={ (e) => this.onChange('email', e.nativeEvent.text) }
+          value={ this.state.email }
         />
         <TextInput
           style={ styles.input }
@@ -39,9 +62,11 @@ class LogInForm extends Component {
           underlineColorAndroid='transparent'
           secureTextEntry
           onChange={ (e) => this.onChange('password', e.nativeEvent.text) }
+          value={ this.state.password }
         />
         <TouchableOpacity
           style={ styles.btn }
+          onPress={ () => this.signIn(this.state.email, this.state.password) }
         >
           <Text style={ styles.btnTxt }>SIGN IN</Text>
         </TouchableOpacity>
