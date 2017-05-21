@@ -50,21 +50,4 @@ router.post('/signIn', (req, res, next) => {
   })
 })
 
-passport.use(new LocalStrategy(
-  (_email, _password, done) => {
-    User.findOne({ email: _email }, (err,user) => {
-      if(err){
-        return done(err);
-      }
-      if(!user) {
-        return done(null,false, { message: 'Incorrect user email.' });
-      }
-      if(!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-    })
-  }
-));
-
 module.exports = router;

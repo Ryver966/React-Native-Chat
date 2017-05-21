@@ -9,6 +9,7 @@ import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import LoadingScreen from './Components/LoadingScreen';
+import UserMainScreen from './Components/UserMainScreen/UserMainScreen';
 
 class App extends Component {
 
@@ -22,7 +23,7 @@ class App extends Component {
     }
   }
   componentWillMount() {
-    setTimeout(() =>{ this.setState({ isLoading: false }) }, 2000)
+    setTimeout(() =>{ this.setState({ isLoading: false }) }, 1000)
   }
 
   renderScene(route, navigator) {
@@ -35,6 +36,8 @@ class App extends Component {
       return <ForgotPassword navigator={ navigator } />
       case 'loadingScreen':
       return <LoadingScreen />
+      case 'mainUserScreen':
+      return <UserMainScreen navigator={ navigator } />
     }
   }
 
@@ -49,7 +52,7 @@ class App extends Component {
         return(
           <View style={ styles.container }>
             <Navigator
-              initialRoute={{ id: 'signInScreen' }}
+              initialRoute={{ id: 'mainUserScreen' }}
               renderScene={ this.renderScene }
             />
           </View>
