@@ -4,7 +4,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text
+  Text,
+  Alert
 } from 'react-native';
 import { authUser } from '../../../server/actions/actions';
 
@@ -33,12 +34,13 @@ class LogInForm extends Component {
             email: null,
             password: null
           })
+          this.props.navigator.replace({ id: 'mainUserScreen' })
         })
         .catch(() => {
-          console.warn('Something gone wrong!')
+          Alert.alert('Something gone wrong!')
         })
     } else {
-      console.warn('Check all fields!')
+      Alert.alert('Check all fields!')
     }
   }
 

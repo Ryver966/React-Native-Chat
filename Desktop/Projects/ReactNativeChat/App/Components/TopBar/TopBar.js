@@ -22,11 +22,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#313131',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    flexDirection: 'row',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   title: {
     color: '#E5CD25',
     fontSize: 35,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+    flex: 6,
+    textAlign: 'center'
+  },
 })

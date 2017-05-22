@@ -8,18 +8,16 @@ import {
 
 import TopBar from '../TopBar/TopBar';
 
+export let nav;
+
 class UserMainScreen extends Component {
   render() {
+    nav = this.props.navigator;
     return(
       <View style={ styles.container }>
-        <View style={ styles.topContainer }>
-          <TopBar />
-        </View>
-        <View style={ styles.bodyContainer }>
-          <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
 
-          </ScrollView>
-        </View>
+        </ScrollView>
       </View>
     )
   }

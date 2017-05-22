@@ -10,6 +10,10 @@ import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import LoadingScreen from './Components/LoadingScreen';
 import UserMainScreen from './Components/UserMainScreen/UserMainScreen';
+import TopBar from './Components/TopBar/TopBar';
+import BottomBar from './Components/BottomBar/BottomBar';
+import ContactsList from './Components/ContactsScreen/ContactsList';
+import NewContacts from './Components/ContactsScreen/NewContacts';
 
 class App extends Component {
 
@@ -19,11 +23,12 @@ class App extends Component {
     this.renderScene = this.renderScene.bind(this);
 
     this.state = {
-      isLoading: true
+      isLoading: true,
+      isUserLogged: false
     }
   }
   componentWillMount() {
-    setTimeout(() =>{ this.setState({ isLoading: false }) }, 1000)
+    setTimeout(() =>{ this.setState({ isLoading: false, isUserLogged: true }) }, 1000);
   }
 
   renderScene(route, navigator) {
@@ -34,29 +39,49 @@ class App extends Component {
       return <SignUpScreen navigator={ navigator } />
       case 'forgotPassword':
       return <ForgotPassword navigator={ navigator } />
-      case 'loadingScreen':
-      return <LoadingScreen />
       case 'mainUserScreen':
       return <UserMainScreen navigator={ navigator } />
+      case 'contactsList':
+      return <ContactsList navigator={ navigator } />
+      case 'newContacts':
+      return <NewContacts navigator={ navigator } />
     }
   }
 
   render() {
+    let nav;
+    console.log(this.renderScene)
       if(this.state.isLoading) {
         return(
           <View style={ styles.container }>
             <LoadingScreen />
           </View>
         )
+      } else if(this.state.isUserLogged && !this.state.isLoading) {
+        return(
+          <View style={ styles.container }>
+            <View style={{ flex: 1 }}>
+              <TopBar />
+            </View>
+            <Navigator
+              initialRoute={{ id: 'mainUserScreen' }}
+              renderScene={ this.renderScene }
+              style={{ flex: 7 }}
+            />
+            <View style={{ flex: 1 }}>
+              <BottomBar />
+            </View>
+          </View>
+        )
       } else {
         return(
           <View style={ styles.container }>
             <Navigator
-              initialRoute={{ id: 'mainUserScreen' }}
+              initialRoute={{ id: 'signInScreen' }}
               renderScene={ this.renderScene }
             />
           </View>
-      )
+        )
       }
   }
 }
@@ -66,7 +91,6 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#828281',
-    paddingBottom: 20
+    backgroundColor: '#828281'
   }
 })

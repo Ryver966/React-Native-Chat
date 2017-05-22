@@ -21,7 +21,7 @@ class SignInScreen extends Component {
           <Text style={ styles.logoTxt }>Chat App</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <LogInForm />
+          <LogInForm navigator={ this.props.navigator } />
         </View>
         <View>
           <TouchableOpacity onPress={ () => this.props.navigator.replace({ id: 'signUpScreen' }) }>
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    paddingBottom: 20
   },
   logoContainer: {
     alignSelf: 'center',
