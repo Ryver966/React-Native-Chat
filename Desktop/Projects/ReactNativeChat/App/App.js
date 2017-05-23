@@ -14,6 +14,9 @@ import TopBar from './Components/TopBar/TopBar';
 import BottomBar from './Components/BottomBar/BottomBar';
 import ContactsList from './Components/ContactsScreen/ContactsList';
 import NewContacts from './Components/ContactsScreen/NewContacts';
+import SettignsScreen from './Components/SettingsScreen/SettingsScreen';
+import UserProfile from './Components/SettingsScreen/UserProfile';
+import EditUserProfile from './Components/EditUserProfile/EditUserProfile';
 
 class App extends Component {
 
@@ -45,6 +48,12 @@ class App extends Component {
       return <ContactsList navigator={ navigator } />
       case 'newContacts':
       return <NewContacts navigator={ navigator } />
+      case 'settings':
+      return <SettignsScreen navigator={ navigator } />
+      case 'userProfile':
+      return <UserProfile navigator={ navigator } />
+      case 'editUserProfile':
+      return <EditUserProfile navigator={ navigator } />
     }
   }
 

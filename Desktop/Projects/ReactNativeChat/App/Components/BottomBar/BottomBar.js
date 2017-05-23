@@ -34,6 +34,7 @@ class BottomBar extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center' }}
+          onPress={ () => nav.replace({ id: 'settings' }) }
         >
           <Icon
             name='gear'

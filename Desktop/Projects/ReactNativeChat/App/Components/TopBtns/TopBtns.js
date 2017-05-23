@@ -13,20 +13,20 @@ class TopBtns extends Component {
       <View style={ styles.container }>
         <TouchableOpacity
           style={[ styles.btn, styles.leftBtn ]}
-          onPress={ () => this.props.navigator.replace({ id: 'contactsList' }) }
+          onPress={ () => this.props.navigator.replace({ id: this.props.routesId[0] }) }
         >
           <Icon
-            name='group'
+            name={ this.props.names[0] }
             size={ 30 }
             color='#828281'
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={[ styles.btn, styles.rightBtn ]}
-          onPress={ () => this.props.navigator.replace({ id: 'newContacts' }) }
+          onPress={ () => this.props.navigator.replace({ id: this.props.routesId[1] }) }
         >
           <Icon
-            name='user-plus'
+            name={ this.props.names[1] }
             size={ 30 }
             color='#828281'
           />
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     flexDirection: 'row',
-    marginBottom: 10
+    marginBottom: 20
   },
   btn: {
     backgroundColor: '#E5CD25',
