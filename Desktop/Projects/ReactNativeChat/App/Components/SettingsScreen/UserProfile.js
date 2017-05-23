@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     color: '#828181',
-    flex: 4,
-    fontSize: 20
+    flex: 4
   }
 })

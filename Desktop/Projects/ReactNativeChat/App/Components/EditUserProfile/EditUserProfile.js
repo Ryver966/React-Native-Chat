@@ -64,7 +64,7 @@ class EditUserProfile extends Component {
               style={{ flex: 1 }}
             />
             <TextInput
-              style={{ flex: 6 }}
+              style={ styles.input }
               underlineColorAndroid='transparent'
               onChange={ (e) => this.onChange('email', e.nativeEvent.text) }
               value={ this.state.email }
@@ -81,7 +81,7 @@ class EditUserProfile extends Component {
               style={{ flex: 1 }}
             />
             <TextInput
-              style={{ flex: 6 }}
+              style={ styles.input }
               underlineColorAndroid='transparent'
               onChange={ (e) => this.onChange('name', e.nativeEvent.text) }
               value={ this.state.name }
@@ -119,9 +119,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: '#fff',
     flexDirection: 'row',
-    height: 45,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    alignItems: 'center'
   },
   fieldContainer: {
     marginBottom: 20
@@ -143,5 +143,9 @@ const styles = StyleSheet.create({
   btnTxt: {
     color: '#fff',
     fontSize: 16
+  },
+  input: {
+    flex: 6,
+    height: 35
   }
 })
