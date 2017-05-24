@@ -9,12 +9,37 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { nav } from '../UserMainScreen/UserMainScreen';
 
 class BottomBar extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.navigate = this.navigate.bind(this);
+
+    this.state = {
+      borderMainScreen: true,
+      borderContactsScreen: false,
+      borderSettingsScreen: false
+    }
+  }
+
+  navigate(fieldName, navId) {
+    nav.replace({ id: navId })
+
+    this.setState({ 
+      borderMainScreen: false,
+      borderContactsScreen: false,
+      borderSettingsScreen: false,
+      [fieldName]: true
+    })
+  }  
+
   render() {
     return(
       <View style={ styles.container }>
         <TouchableOpacity
-          style={{ flex: 1, alignItems: 'center' }}
-         
+          style={ [styles.btn,
+          this.state.borderMainScreen ? { borderBottomWidth: 4, borderColor: '#E5CD25', backgroundColor: '#212121' } : '' ] }
+          onPress={ () => this.navigate('borderMainScreen', 'mainUserScreen') }
         >
           <Icon
             name='comments-o'
@@ -23,8 +48,9 @@ class BottomBar extends Component {
           />
         </TouchableOpacity>
         <TouchableOpacity
-         style={{ flex: 1, alignItems: 'center' }}
-         onPress={ () => nav.replace({ id: 'contactsList' }) }
+         style={ [styles.btn,
+          this.state.borderContactsScreen ? { borderBottomWidth: 4, borderColor: '#E5CD25', backgroundColor: '#212121' } : '' ] }
+         onPress={ () => this.navigate('borderContactsScreen', 'contactsList') }
         >
           <Icon
             name='group'
@@ -33,8 +59,9 @@ class BottomBar extends Component {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ flex: 1, alignItems: 'center' }}
-          onPress={ () => nav.replace({ id: 'settings' }) }
+          style={ [styles.btn,
+          this.state.borderSettingsScreen ? { borderBottomWidth: 4, borderColor: '#E5CD25', backgroundColor: '#212121' } : '' ] }
+          onPress={ () => this.navigate('borderSettingsScreen', 'settings') }
         >
           <Icon
             name='gear'
@@ -53,10 +80,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#313131',
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center',
-    flexDirection: 'row',
-    paddingLeft: 20,
-    paddingRight: 20
+    flexDirection: 'row'
+  },
+  btn: {
+    flex: 1,
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   }
 })

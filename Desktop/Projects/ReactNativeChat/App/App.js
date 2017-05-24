@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
+  StatusBar
 } from 'react-native';
 import { Navigator } from 'react-native-deprecated-custom-components';
 
@@ -17,6 +18,7 @@ import NewContacts from './Components/ContactsScreen/NewContacts';
 import SettignsScreen from './Components/SettingsScreen/SettingsScreen';
 import UserProfile from './Components/SettingsScreen/UserProfile';
 import EditUserProfile from './Components/EditUserProfile/EditUserProfile';
+import ThreadView from './Components/ThreadView/ThreadView';
 
 class App extends Component {
 
@@ -54,6 +56,8 @@ class App extends Component {
       return <UserProfile navigator={ navigator } />
       case 'editUserProfile':
       return <EditUserProfile navigator={ navigator } />
+      case 'thread':
+      return <ThreadView navigator={ navigator } />
     }
   }
 
@@ -69,13 +73,16 @@ class App extends Component {
       } else if(this.state.isUserLogged && !this.state.isLoading) {
         return(
           <View style={ styles.container }>
+            <StatusBar
+              barStyle='light-content'
+            />
             <View style={{ flex: 1 }}>
               <TopBar />
             </View>
             <Navigator
               initialRoute={{ id: 'mainUserScreen' }}
               renderScene={ this.renderScene }
-              style={{ flex: 7 }}
+              style={{ flex: 8 }}
             />
             <View style={{ flex: 1 }}>
               <BottomBar />
@@ -85,6 +92,9 @@ class App extends Component {
       } else {
         return(
           <View style={ styles.container }>
+            <StatusBar
+              barStyle='light-content'
+            />
             <Navigator
               initialRoute={{ id: 'signInScreen' }}
               renderScene={ this.renderScene }

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import TopBar from '../TopBar/TopBar';
+import Thread from './Thread';
 
 export let nav;
 
@@ -15,8 +16,32 @@ class UserMainScreen extends Component {
     nav = this.props.navigator;
     return(
       <View style={ styles.container }>
-        <ScrollView style={{ flex: 1 }}>
-
+        <ScrollView style={{ flex: 1, paddingTop: 20, paddingBottom: 20 }}>
+          <Thread
+            name='John Doe'
+            message='Hello my dear friend! Test soemthign blah blah blah blah blahblbbh'
+            nav={ nav }
+          />
+          <Thread
+            name='Alice Doe'
+            message='Hello  blah blah blah blah blahblbbh'
+            nav={ nav }
+          />
+          <Thread
+            name='Alice Johnson'
+            message='Hello  blah blah blah blah blahblbbh'
+            nav={ nav }
+          />
+          <Thread
+            name='Peter Parker'
+            message='ah blah blah blah blahblbbh'
+            nav={ nav }
+          />
+          <Thread
+            name='Johny Stark'
+            message='Hello  b asd asd asd zxcasdasdzxc'
+            nav={ nav }
+          />
         </ScrollView>
       </View>
     )
