@@ -41,7 +41,7 @@ class ThreadView extends Component {
             userNameBoolean={ true }
             name='Jack Sparrow'
             date='15.12.2016'
-            msg='asdzxcasdasdzxc asdasd zxc sad jsfdjfijsfsojsfadojasofjsadofjasdojfosadjfosadj'
+            msg='asdzxcasdasdzxc asdasd zxc sad '
           />
           <Message
             userNameBoolean={ false }

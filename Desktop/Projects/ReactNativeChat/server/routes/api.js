@@ -1,20 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../modules/users');
-const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jwt-simple');
+const passport = require('passport');
 
-router.get('/users', (req, res, next) => {
-  res.send({ name: 'Abdul' })
+router.get('/signUp', (req, res, next) => {
+  res.send('register')
 });
 
-router.post('/users', (req, res, next) => {
-  User.create(req.body)
-  .then((user) => {
-    res.send(user);
-  })
-  .catch(next)
+router.post('/signUp', (req, res, next) => {
+
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('password', 'Password must have minimum 6 charts').isLength(6, 20);
+
+  const errors = req.validationErrors();
+
+  if(errors) {
+    res.send(errors)
+  } else {
+    User.create(req.body)
+    .then((user) => {
+      res.send(user)
+    })
+    .catch(next)
+  }
 });
 
 router.put('/users/:id', (req, res, next) => {
@@ -31,23 +41,10 @@ router.delete('/users/:id', (req, res, next) => {
   })
 });
 
-router.post('/signIn', (req, res, next) => {
-  User.findOne({
-    email: req.body.email
-  }, (err, user) => {
-    if(err) throw err;
-
-    if(!user) {
-      return res.status(403).send({ success: false, msg: 'Auth failed' })
-    } else {
-      if(user.password === req.body.password) {
-        console.log(user)
-        res.json({ success: true, msg: 'Auth success.' });
-      } else {
-        return res.status(403).send({ success: false, msg: 'Auth failed. Wrong Password.' })
-      }
-    }
-  })
-})
+router.post('/signIn', passport.authenticate('local'),
+  (req, res) => {
+    res.send({ msg: 'success' })
+  }
+)
 
 module.exports = router;

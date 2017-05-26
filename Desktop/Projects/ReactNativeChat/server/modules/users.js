@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
+const hash = bcrypt.hashSync(this.password)
 
 const UserSchema = new Schema({
   email: {
@@ -10,16 +11,17 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: [true, '']
+    required: [true, 'Password is required']
   },
   name: {
     type: String,
-    required: [true, ''],
+    required: [true, 'Name is required'],
     index: { unique: true }
   }
 })
 
-UserSchema.methods.validPassword = (password) => {
+UserSchema.methods.validPassword = function(password) {
+  console.log(this);
   return bcrypt.compareSync(password, this.password);
 }
 
