@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt-nodejs');
-const hash = bcrypt.hashSync(this.password)
 
 const UserSchema = new Schema({
   email: {
@@ -17,6 +15,14 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Name is required'],
     index: { unique: true }
+  },
+  threads: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Thread', index: true }],
+    required: false
+  },
+  friends: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'User', index: true }],
+    required: false
   }
 })
 

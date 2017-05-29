@@ -30,7 +30,9 @@ class RegisterForm extends Component {
       createUser({ 
         email: _email,
         password: pass,
-        name: _name 
+        name: _name ,
+        threads: [],
+        friends: []
       })
         .then(() => {
           this.setState({

@@ -7,7 +7,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const path = require('path');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./modules/users');
+const User = require('./models/users');
 
 const app = express();
 

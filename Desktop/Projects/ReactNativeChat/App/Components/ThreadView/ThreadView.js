@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -16,12 +17,33 @@ class ThreadView extends Component {
   constructor(props) {
     super(props);
 
+    this.sendMsg = this.sendMsg.bind(this);
+
     this.state = {
       msgTxt: null
     }
   }
+  componentWillMount() {
+    this.props.bottomBarVisibility();
+  }
+  componentWillUnmount() {
+    this.props.bottomBarVisibility();
+  }
+
+  sendMsg(_userName, _msg) {
+    if(_msg) {
+      console.log({ 
+        userName: _userName, 
+        msg: _msg 
+      })
+      this.setState({ msgTxt: null })
+    } else {
+      Alert.alert('Type some message, please.')
+    }
+  }
 
   render() {
+    const userName = 'Test User';
     return(
       <View style={{ flex: 1, paddingTop: 20 }}>
         <ScrollView style={{ flex: 1, marginBottom: 20 }}>
@@ -76,7 +98,10 @@ class ThreadView extends Component {
           onChange={ (e) => this.setState({ msgTxt: e.nativeEvent.text }) }
           value={ this.state.msgTxt}
         />
-        <TouchableOpacity style={ styles.sendMsgBtn }>
+        <TouchableOpacity 
+          style={ styles.sendMsgBtn }
+          onPress ={ () => this.sendMsg(userName, this.state.msgTxt) }
+        >
             <Icon
               name='envelope'
               size={ 25 }
@@ -101,7 +126,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   input: {
-    height: 35,
+    height: 40,
     flex: 9,
     backgroundColor: '#fff',
     paddingLeft: 5,
@@ -110,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   sendMsgBtn: {
-    flex: 2,
+    flex: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#313131',

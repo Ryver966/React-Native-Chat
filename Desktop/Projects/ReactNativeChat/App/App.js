@@ -26,14 +26,20 @@ class App extends Component {
     super(props);
 
     this.renderScene = this.renderScene.bind(this);
+    this.setBottomBarVisibility = this.setBottomBarVisibility.bind(this);
 
     this.state = {
       isLoading: true,
-      isUserLogged: false
+      isUserLogged: false,
+      isBottombarVisible: true
     }
   }
   componentWillMount() {
     setTimeout(() =>{ this.setState({ isLoading: false, isUserLogged: true }) }, 1000);
+  }
+
+  setBottomBarVisibility() {
+    this.setState({ isBottombarVisible: !this.state.isBottombarVisible })
   }
 
   renderScene(route, navigator) {
@@ -57,7 +63,10 @@ class App extends Component {
       case 'editUserProfile':
       return <EditUserProfile navigator={ navigator } />
       case 'thread':
-      return <ThreadView navigator={ navigator } />
+      return <ThreadView 
+        navigator={ navigator } 
+        bottomBarVisibility={ this.setBottomBarVisibility } 
+      />
     }
   }
 
@@ -84,7 +93,7 @@ class App extends Component {
               renderScene={ this.renderScene }
               style={{ flex: 8 }}
             />
-            <View style={{ flex: 1 }}>
+            <View style={ [styles.bottomContainer, this.state.isBottombarVisible ? '' : { display: 'none' }] }>
               <BottomBar />
             </View>
           </View>
@@ -111,5 +120,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#828281'
+  },
+  bottomContainer: {
+    flex: 1
   }
 })
