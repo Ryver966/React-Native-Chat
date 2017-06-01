@@ -38,7 +38,7 @@ class Message extends Component {
         <View style={[{ flex: 1 }, this.state.isUserName ? { display: 'none' } : ''] }>
           { avatar }
         </View>
-        <View style={{ flex: 7, paddingLeft: 15 }}>
+        <View style={{ flex: 9, paddingLeft: 5 }}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={ styles.name }>{ this.props.name }</Text>
             <Text style={ styles.date }>{ this.props.date }</Text>
@@ -68,8 +68,9 @@ const styles = StyleSheet.create({
   },
   date: {
     opacity: 0.8,
-    fontSize: 12,
-    alignSelf: 'center'
+    fontSize: 10,
+    alignSelf: 'center',
+    color: '#fff'
   },
   msgTxt: {
     color: '#fff',

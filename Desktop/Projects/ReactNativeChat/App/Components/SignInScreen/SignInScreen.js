@@ -21,7 +21,7 @@ class SignInScreen extends Component {
           <Text style={ styles.logoTxt }>Chat App</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <LogInForm navigator={ this.props.navigator } />
+          <LogInForm setUser={ this.props.setUser } navigator={ this.props.navigator } />
         </View>
         <View>
           <TouchableOpacity onPress={ () => this.props.navigator.replace({ id: 'signUpScreen' }) }>

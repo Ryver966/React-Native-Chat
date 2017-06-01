@@ -24,6 +24,13 @@ class EditUserProfile extends Component {
     }
   }
 
+  componentWillMount() {
+    this.props.topBarArrowVisibility();
+  }
+  componentWillUnmount() {
+    this.props.topBarArrowVisibility();
+  }
+
   sendData(_avatar, _email, _name) {
     console.log({ 
       avatar: _avatar,

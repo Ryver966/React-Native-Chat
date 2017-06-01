@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  StatusBar
+  StatusBar,
+  AsyncStorage
 } from 'react-native';
 import { Navigator } from 'react-native-deprecated-custom-components';
+import { 
+  getUsers, 
+  getValidUser 
+} from '../server/actions/actions';
 
 import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
@@ -19,6 +24,7 @@ import SettignsScreen from './Components/SettingsScreen/SettingsScreen';
 import UserProfile from './Components/SettingsScreen/UserProfile';
 import EditUserProfile from './Components/EditUserProfile/EditUserProfile';
 import ThreadView from './Components/ThreadView/ThreadView';
+import ChangePassword from './Components/ChangePassword/ChangePassword';
 
 class App extends Component {
 
@@ -27,15 +33,38 @@ class App extends Component {
 
     this.renderScene = this.renderScene.bind(this);
     this.setBottomBarVisibility = this.setBottomBarVisibility.bind(this);
+    this.setTopBarArrowVisibility = this.setTopBarArrowVisibility.bind(this);
+    this.checkUser = this.checkUser.bind(this);
 
     this.state = {
       isLoading: true,
       isUserLogged: false,
-      isBottombarVisible: true
+      isBottombarVisible: true,
+      isTopBarArrowVisible: false,
+      users: null,
+      user: null,
+      token: null
     }
   }
   componentWillMount() {
-    setTimeout(() =>{ this.setState({ isLoading: false, isUserLogged: true }) }, 1000);
+    setTimeout(() =>{ this.setState({ isLoading: false }) }, 1000);
+    getUsers().then((res) => this.setState({ users: res }));
+    AsyncStorage.getItem('token'). then((val) => {
+      if(val) {
+        this.setState({ token: val, isUserLogged: true })
+      } else {
+        this.setState({ isUserLogged: false })
+      }
+    })
+  }
+  checkUser() {
+    getValidUser(this.state.token).then((user) => { 
+      this.setState({ user: user })
+    });
+  }
+
+  setTopBarArrowVisibility() {
+    this.setState({ isTopBarArrowVisible: !this.state.isTopBarArrowVisible })
   }
 
   setBottomBarVisibility() {
@@ -55,38 +84,48 @@ class App extends Component {
       case 'contactsList':
       return <ContactsList navigator={ navigator } />
       case 'newContacts':
-      return <NewContacts navigator={ navigator } />
+      return <NewContacts users={ this.state.users } navigator={ navigator } />
       case 'settings':
       return <SettignsScreen navigator={ navigator } />
       case 'userProfile':
       return <UserProfile navigator={ navigator } />
       case 'editUserProfile':
-      return <EditUserProfile navigator={ navigator } />
+      return <EditUserProfile 
+        navigator={ navigator } 
+        topBarArrowVisibility={ this.setTopBarArrowVisibility }
+      />
       case 'thread':
       return <ThreadView 
         navigator={ navigator } 
         bottomBarVisibility={ this.setBottomBarVisibility } 
+        topBarArrowVisibility={ this.setTopBarArrowVisibility }
+      />
+      case 'changePassword':
+      return <ChangePassword 
+        navigator={ navigator } 
+        user={ this.state.user } 
+        topBarArrowVisibility={ this.setTopBarArrowVisibility }
       />
     }
   }
 
   render() {
+    this.checkUser();
     let nav;
-    console.log(this.renderScene)
       if(this.state.isLoading) {
         return(
           <View style={ styles.container }>
             <LoadingScreen />
           </View>
         )
-      } else if(this.state.isUserLogged && !this.state.isLoading) {
+      } else if(!this.state.isLoading && this.state.isUserLogged) {
         return(
           <View style={ styles.container }>
             <StatusBar
               barStyle='light-content'
             />
             <View style={{ flex: 1 }}>
-              <TopBar />
+              <TopBar isArrowVisible={ this.state.isTopBarArrowVisible } />
             </View>
             <Navigator
               initialRoute={{ id: 'mainUserScreen' }}

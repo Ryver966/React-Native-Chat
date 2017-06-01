@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 class NewPasswordForm extends Component {
@@ -24,7 +25,7 @@ class NewPasswordForm extends Component {
     if(email) {
       this.setState({ email: null })
     } else {
-      console.warn('Check e-mail field!')
+      Alert.alert('Check e-mail field!')
     }
   }
 

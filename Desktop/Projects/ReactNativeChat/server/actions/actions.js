@@ -1,7 +1,8 @@
 const url = 'http://localhost:4000/api/';
+const randomToken = require('random-token')
 
 export function createUser(user) {
-  return fetch(`${ url }users`, {
+  return fetch(`${ url }signUp`, {
     method: "POST",
     headers: {
       'Accept': 'application.json',
@@ -21,7 +22,7 @@ export function authUser(user) {
     },
     body: JSON.stringify(user)
   })
-  .then((response) => response.json)
+  .then((response) => response.json())
 };
 
 export function createThread(thread) {
@@ -60,7 +61,7 @@ export function addNewFriend(friendship) {
   .then((response) => response.json)
 };
 
-export function deleteFriend(friendshipId) {
+export function deleteFriendship(friendshipId) {
   return fetch(`${ url }friendships/${ friendShipId }`, {
     method: "POST",
     headers: {
@@ -70,4 +71,23 @@ export function deleteFriend(friendshipId) {
     body: null
   })
   .then((response) => response.json)
-}
+};
+
+export function editProfile(userId, editedUser) {
+  return fetch(`${url}users/${userId}`, {
+    method: "PUT",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(editedUser)
+  })
+  .then((response) => response.json)
+};
+
+export function getUsers() {
+  return fetch(`${url}users`).then((res) => res.json())
+};
+export function getValidUser(id) {
+  return fetch(`${url}validUser/${ id }`).then((res) => res.json())
+};

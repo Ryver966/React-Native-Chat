@@ -25,9 +25,11 @@ class ThreadView extends Component {
   }
   componentWillMount() {
     this.props.bottomBarVisibility();
+    this.props.topBarArrowVisibility();
   }
   componentWillUnmount() {
     this.props.bottomBarVisibility();
+    this.props.topBarArrowVisibility();
   }
 
   sendMsg(_userName, _msg) {
@@ -45,49 +47,14 @@ class ThreadView extends Component {
   render() {
     const userName = 'Test User';
     return(
-      <View style={{ flex: 1, paddingTop: 20 }}>
+      <View style={{ flex: 1, paddingTop: 10 }}>
         <ScrollView style={{ flex: 1, marginBottom: 20 }}>
           <Message
+            navigator={ this.props.navigator }
             userNameBoolean={ false }
             name='John Doe'
             date='15.12.2016'
             msg='asdasdasdadsadsasdazxczxcasdxzcas'
-          />
-          <Message
-            userNameBoolean={ true }
-            name='Jack Sparrow'
-            date='15.12.2016'
-            msg='Hello world!'
-          />
-          <Message
-            userNameBoolean={ true }
-            name='Jack Sparrow'
-            date='15.12.2016'
-            msg='asdzxcasdasdzxc asdasd zxc sad '
-          />
-          <Message
-            userNameBoolean={ false }
-            name='John Doe'
-            date='15.12.2016'
-            msg='sdfsgfsdfgfdsgterwssdfgrtwegwegwgwgs'
-          />
-          <Message
-            userNameBoolean={ true }
-            name='Jack Sparrow'
-            date='15.12.2016'
-            msg='sdfsgfsdfgfdsgterwssdfgrtwegwegwgwgs'
-          />
-          <Message
-            userNameBoolean={ false }
-            name='John Doe'
-            date='15.12.2016'
-            msg='sdfsgfsdfgfdsgterwssdfgrtwegwegwgwgs'
-          />
-          <Message
-            userNameBoolean={ false }
-            name='John Doe'
-            date='15.12.2016'
-            msg='sdfsgfsdfgfdsgterwssdfgrtwegwegwgwgs'
           />
         </ScrollView>
         <View style={ styles.inputContainer }>

@@ -4,7 +4,8 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -20,7 +21,7 @@ class UserProfile extends Component {
   }
 
   signOut() {
-    console.warn('Logged Out')
+    AsyncStorage.setItem('token', '');
   }
 
   render() {
@@ -44,7 +45,7 @@ class UserProfile extends Component {
             navigator={ this.props.navigator }
             name='shield'
             txt='Change Password'
-            routeId='test'
+            routeId='changePassword'
           />
           <UserOption
             navigator={ this.props.navigator }

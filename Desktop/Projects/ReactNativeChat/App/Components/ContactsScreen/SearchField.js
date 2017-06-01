@@ -22,6 +22,7 @@ class SearchField extends Component {
 
   onChange(val) {
     this.setState({ searchField: val })
+    this.props.onInputChange(val)
   }
 
   render() {
@@ -34,15 +35,13 @@ class SearchField extends Component {
           onChange={ (e) => this.onChange(e.nativeEvent.text) }
           value={ this.state.searchField }
         />
-         <TouchableOpacity
-           style={ styles.searchBtn }
-        >
+         <View style={ styles.searchBtn }>
           <Icon
             name='search'
             size={ 35 }
             color='#828281'
           />
-        </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -54,7 +53,8 @@ const styles = StyleSheet.create({
   searchFieldContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 10
+    borderRadius: 10,
+    marginBottom: 20
   },
   input: {
     height: 40,

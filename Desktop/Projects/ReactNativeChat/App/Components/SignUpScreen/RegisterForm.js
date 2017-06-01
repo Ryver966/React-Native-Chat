@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import { createUser } from '../../../server/actions/actions';
 
@@ -22,7 +23,6 @@ class RegisterForm extends Component {
       password: null,
       confPassword: null
     }
-
   }
 
   signUp(_email, _name, pass, confPass) {
@@ -30,7 +30,7 @@ class RegisterForm extends Component {
       createUser({ 
         email: _email,
         password: pass,
-        name: _name ,
+        name: _name.charAt(0).toUpperCase(),
         threads: [],
         friends: []
       })
@@ -43,10 +43,10 @@ class RegisterForm extends Component {
           })
         })
         .catch(() => {
-          console.warn('Something gone wrong!')
+          Alert.alert('Something gone wrong!')
         })
     } else {
-      console.warn('Check all fields!')
+      Alert,alert('Check all fields!')
     }
   }
 

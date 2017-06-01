@@ -3,13 +3,15 @@ const router = express.Router();
 const LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jwt-simple');
 const passport = require('passport');
+const session = require('express-session');
+var randomToken = require('random-token').create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 
 const User = require('../models/users');
 const Thread = require('../models/thread');
 const Friendship = require('../models/friendship');
 
-router.get('/signUp', (req, res, next) => {
-  res.send('register')
+router.get('/users', (req, res, next) => {
+  User.find().then((users) => res.send(users))
 });
 
 router.post('/signUp', (req, res, next) => {
@@ -46,7 +48,12 @@ router.delete('/users/:id', (req, res, next) => {
 
 router.post('/signIn', passport.authenticate('local'),
   (req, res) => {
-    res.send({ msg: 'success' })
+    res.send({ id: req.user.id })
+  }
+);
+router.get('/signIn', passport.authenticate('local', { session: false }),
+  (req, res, next) => {
+    res.json(req.user)
   }
 );
 
@@ -78,5 +85,14 @@ router.delete('/friendships/:id', (req, res, next) => {
     res.send(user);
   })
 });
+
+router.get('/validUser/:id', (req, res, next) => {
+  User.find({ _id: req.params.id })
+  .then((user) => {
+    res.send(user[0]);
+  })
+});
+
+router.get('')
 
 module.exports = router;

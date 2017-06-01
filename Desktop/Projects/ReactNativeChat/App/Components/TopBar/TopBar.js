@@ -2,13 +2,29 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
+import { nav } from '../UserMainScreen/UserMainScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class TopBar extends Component {
   render() {
     return(
       <View style={ styles.container }>
+        <TouchableOpacity
+          style={[styles.backBtn , this.props.isArrowVisible ? '' : { display: 'none' }]}
+          onPress={ () => nav.pop() }
+        >
+          <Icon
+            name='chevron-left'
+            size={ 30 }
+            color='#E5CD25'
+          />
+        </TouchableOpacity>
+        <View>
+          
+        </View>
         <Text style={ styles.title }>Chat App</Text>
       </View>
     )
@@ -22,9 +38,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#313131',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
-    paddingLeft: 20,
-    paddingRight: 20
+    padding: 20
   },
   title: {
     color: '#E5CD25',
@@ -32,5 +48,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 6,
     textAlign: 'center'
-  },
+  }
 })

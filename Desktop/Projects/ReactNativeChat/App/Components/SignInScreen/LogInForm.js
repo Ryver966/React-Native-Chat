@@ -5,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 import { authUser } from '../../../server/actions/actions';
 
@@ -29,12 +30,12 @@ class LogInForm extends Component {
         email: _email,
         password: _password,
       })
-        .then(() => {
+        .then((res) => {
+          AsyncStorage.setItem('token', res.id)
           this.setState({
             email: null,
             password: null
           })
-          this.props.navigator.replace({ id: 'mainUserScreen' })
         })
         .catch(() => {
           Alert.alert('Something gone wrong!')
@@ -43,7 +44,7 @@ class LogInForm extends Component {
       Alert.alert('Check all fields!')
     }
   }
-
+john
   onChange(fieldName, val) {
     this.setState({ [fieldName]: val })
   }

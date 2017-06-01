@@ -23,13 +23,12 @@ const UserSchema = new Schema({
   friends: {
     type: [{ type: Schema.Types.ObjectId, ref: 'User', index: true }],
     required: false
+  },
+   token: {
+    type: String,
+    required: false
   }
 })
-
-UserSchema.methods.validPassword = function(password) {
-  console.log(this);
-  return bcrypt.compareSync(password, this.password);
-}
 
 const User = mongoose.model('user', UserSchema);
 
