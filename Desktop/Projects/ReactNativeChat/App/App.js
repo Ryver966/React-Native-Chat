@@ -10,6 +10,8 @@ import {
   getUsers, 
   getValidUser 
 } from '../server/actions/actions';
+import store from './mobX/store';
+import { observer } from 'mobx-react';
 
 import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
@@ -32,43 +34,26 @@ class App extends Component {
     super(props);
 
     this.renderScene = this.renderScene.bind(this);
-    this.setBottomBarVisibility = this.setBottomBarVisibility.bind(this);
-    this.setTopBarArrowVisibility = this.setTopBarArrowVisibility.bind(this);
-    this.checkUser = this.checkUser.bind(this);
 
     this.state = {
-      isLoading: true,
       isUserLogged: false,
       isBottombarVisible: true,
       isTopBarArrowVisible: false,
-      users: null,
-      user: null,
-      token: null
     }
   }
   componentWillMount() {
     setTimeout(() =>{ this.setState({ isLoading: false }) }, 1000);
-    getUsers().then((res) => this.setState({ users: res }));
+    getUsers().then((res) => store.allUsers = res);
     AsyncStorage.getItem('token'). then((val) => {
       if(val) {
-        this.setState({ token: val, isUserLogged: true })
+        store.isLoading = false
+        store.token = val
+        store.setValidUser(val)
+        this.setState({ isUserLogged: true })
       } else {
-        this.setState({ isUserLogged: false })
+        store.isLoading = false
       }
     })
-  }
-  checkUser() {
-    getValidUser(this.state.token).then((user) => { 
-      this.setState({ user: user })
-    });
-  }
-
-  setTopBarArrowVisibility() {
-    this.setState({ isTopBarArrowVisible: !this.state.isTopBarArrowVisible })
-  }
-
-  setBottomBarVisibility() {
-    this.setState({ isBottombarVisible: !this.state.isBottombarVisible })
   }
 
   renderScene(route, navigator) {
@@ -84,41 +69,32 @@ class App extends Component {
       case 'contactsList':
       return <ContactsList navigator={ navigator } />
       case 'newContacts':
-      return <NewContacts users={ this.state.users } navigator={ navigator } />
+      return <NewContacts navigator={ navigator } />
       case 'settings':
       return <SettignsScreen navigator={ navigator } />
       case 'userProfile':
       return <UserProfile navigator={ navigator } />
       case 'editUserProfile':
-      return <EditUserProfile 
-        navigator={ navigator } 
-        topBarArrowVisibility={ this.setTopBarArrowVisibility }
-      />
+      return <EditUserProfile navigator={ navigator } />
       case 'thread':
-      return <ThreadView 
-        navigator={ navigator } 
-        bottomBarVisibility={ this.setBottomBarVisibility } 
-        topBarArrowVisibility={ this.setTopBarArrowVisibility }
-      />
+      return <ThreadView navigator={ navigator } />
       case 'changePassword':
       return <ChangePassword 
         navigator={ navigator } 
         user={ this.state.user } 
-        topBarArrowVisibility={ this.setTopBarArrowVisibility }
       />
     }
   }
 
   render() {
-    this.checkUser();
     let nav;
-      if(this.state.isLoading) {
+      if(store.isLoading) {
         return(
           <View style={ styles.container }>
             <LoadingScreen />
           </View>
         )
-      } else if(!this.state.isLoading && this.state.isUserLogged) {
+      } else if(!store.isLoading && this.state.isUserLogged) {
         return(
           <View style={ styles.container }>
             <StatusBar
@@ -132,7 +108,7 @@ class App extends Component {
               renderScene={ this.renderScene }
               style={{ flex: 8 }}
             />
-            <View style={ [styles.bottomContainer, this.state.isBottombarVisible ? '' : { display: 'none' }] }>
+            <View style={ [styles.bottomContainer, store.isBottombarVisible ? '' : { display: 'none' }] }>
               <BottomBar />
             </View>
           </View>
@@ -153,7 +129,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default observer(App);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,35 +1,23 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const Sequelize = require('sequelize');
+const sequelize = require('../db_config');
 
-const UserSchema = new Schema({
+const User = sequelize.define('user', {
   email: {
-    type: String,
-    required: [true, 'Email is required!'],
-    index: { unique: true }
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
   },
   password: {
-    type: String,
-    required: [true, 'Password is required']
+    type: Sequelize.STRING,
+    allowNull: false,
   },
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-    index: { unique: true }
-  },
-  threads: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Thread', index: true }],
-    required: false
-  },
-  friends: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'User', index: true }],
-    required: false
-  },
-   token: {
-    type: String,
-    required: false
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
   }
-})
-
-const User = mongoose.model('user', UserSchema);
+});
 
 module.exports = User;

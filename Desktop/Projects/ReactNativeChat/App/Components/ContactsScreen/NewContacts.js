@@ -10,6 +10,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import TopBtns from '../TopBtns/TopBtns';
 import SearchField from './SearchField';
 import Contact from './Contact';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 class NewContacts extends Component {
 
@@ -26,8 +28,8 @@ class NewContacts extends Component {
   onInputChange(val) {
     if(val) {
       this.setState({
-        usersList: this.props.users.filter(user =>
-        user.name.includes(val)
+        usersList: store.allUsers.filter(user =>
+        user.username.includes(val)
         )
       })
     } else {
@@ -66,7 +68,7 @@ class NewContacts extends Component {
   }
 }
 
-export default NewContacts;
+export default observer(NewContacts);
 
 const styles = StyleSheet.create({
   container: {

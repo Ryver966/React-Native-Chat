@@ -1,4 +1,4 @@
-const url = 'http://localhost:4000/api/';
+const url = 'http://localhost:4050/api/';
 const randomToken = require('random-token')
 
 export function createUser(user) {
@@ -11,6 +11,7 @@ export function createUser(user) {
     body: JSON.stringify(user)
   })
   .then((response) => response.json)
+  .catch((err) => console.log(err))
 };
 
 export function authUser(user) {
@@ -23,54 +24,7 @@ export function authUser(user) {
     body: JSON.stringify(user)
   })
   .then((response) => response.json())
-};
-
-export function createThread(thread) {
-  return fetch(`${ url }thread`, {
-    method: "POST",
-    headers: {
-      'Accept': 'application.json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(thread)
-  })
-  .then((response) => response.json)
-};
-
-export function addNewMsgToThread(threadId, msg) {
-  return fetch(`${ url }thread/${ threadId }`, {
-    method: "PUT",
-    headers: {
-      'Accept': 'application.json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(msg)
-  })
-  .then((response) => response.json)
-};
-
-export function addNewFriend(friendship) {
-  return fetch(`${ url }friendships`, {
-    method: "POST",
-    headers: {
-      'Accept': 'application.json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(friendship)
-  })
-  .then((response) => response.json)
-};
-
-export function deleteFriendship(friendshipId) {
-  return fetch(`${ url }friendships/${ friendShipId }`, {
-    method: "POST",
-    headers: {
-      'Accept': 'application.json',
-      'Content-Type': 'application/json'
-    },
-    body: null
-  })
-  .then((response) => response.json)
+  .catch((err) => console.log(err))
 };
 
 export function editProfile(userId, editedUser) {
@@ -83,11 +37,29 @@ export function editProfile(userId, editedUser) {
     body: JSON.stringify(editedUser)
   })
   .then((response) => response.json)
+  .catch((err) => console.log(err))
 };
 
 export function getUsers() {
-  return fetch(`${url}users`).then((res) => res.json())
+  return fetch(`${url}users`)
+  .then((res) => res.json())
+  .catch((err) => console.log(err))
 };
 export function getValidUser(id) {
-  return fetch(`${url}validUser/${ id }`).then((res) => res.json())
+  return fetch(`${url}validUser/${ id }`)
+  .then((res) => res.json())
+  .catch((err) => console.log(err))
+};
+
+export function changePassword(id, editedUser) {
+  return fetch(`${ url }changePassword/${ id }`, {
+    method: "POST",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(editedUser)
+  })
+  .then((response) => response.json())
+  .catch((err) => console.log(err))
 };

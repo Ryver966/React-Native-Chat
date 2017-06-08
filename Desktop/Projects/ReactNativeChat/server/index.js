@@ -1,18 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const session = require('express-session');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const passport = require('passport');
 const path = require('path');
+const cons = require('consolidate');
+const pg = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/users');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/chatApp');
-mongoose.Promise = global.Promise;
+const connect = 'postgres://piotrgorski:1234@localhost:5432/ChatApp';
+
+pg.connect(connect, (err, client) => {
+  if(err) {
+    console.error(err);
+    process.exit(1);
+  }
+  client.end();
+})
 
 app.use(bodyParser.json());
 
@@ -48,7 +56,7 @@ app.use((err, req, res, next) => {
   res.status(422).send({ error: err.message })
 })
 
-app.listen(process.env.port || 4000, () => {
+app.listen(4050, () => {
   console.log('now listening');
 })
 
@@ -71,8 +79,8 @@ passport.use(new LocalStrategy(
     passwordField: 'password'
   },
   (username, password, done) => {
-    User.findOne({ email: username }, (err, user) => {
-      if (err) { return done(err); }
+    User.findOne({ where: { email: username } }).then((user) => {
+      console.log(username)
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }

@@ -7,7 +7,9 @@ import {
   TextInput,
   Alert
 } from 'react-native';
-import { editProfile } from '../../../server/actions/actions';
+import { changePassword } from '../../../server/actions/actions';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 class ChangePassword extends Component {
 
@@ -25,35 +27,36 @@ class ChangePassword extends Component {
   }
 
 componentWillMount() {
-  this.props.topBarArrowVisibility();
+  store.isTopBarArrowVisible = true
 }
 
 componentWillUnmount() {
-   this.props.topBarArrowVisibility();
+  store.isTopBarArrowVisible = false
 }
-
-  sendData(oldPwd, newPwd, confNewPwd) {
-    if(oldPwd && newPwd && confNewPwd) {
-      if(oldPwd === this.props.user.password) {
-        if(newPwd === confNewPwd) {
-          editProfile(this.props.user._id, { password: newPwd })
-          .then(() => {
-            this.setState({
-              oldPwd: null,
-              newPwd: null,
-              confNewPwd: null
-            })
-          })
-        } else {
-          Alert.alert('New password and confirmation must be the same.')
-        }
+sendData(_oldPwd, _newPwd, confNewPwd) {
+  if(_oldPwd && _newPwd && _newPwd === confNewPwd) {
+    changePassword(this.props.user.id, {
+      oldPwd: _oldPwd,
+      newPwd: _newPwd
+    }).then((res) => {
+      if(res.msg !== 'success') {
+        Alert.alert(res.msg)
       } else {
-        Alert.alert('Old password is incorrect.')
+        this.setState({
+          oldPwd: null,
+          newPwd: null,
+          confNewPwd: null
+        })
+        this.props.navigator.pop()
       }
-    } else {
-      Alert.alert('Check all fields.')
-    }
+    })
+    .catch(() => {
+      Alert.alert('Something gone wrong.')
+    })
+  } else {
+    Alert.alert('Check all fields.')
   }
+}
 
   onChange(field, val) {
     this.setState({ [field]: val })
@@ -102,7 +105,7 @@ componentWillUnmount() {
     )
   }
 }
-export default ChangePassword;
+export default observer(ChangePassword);
 
 const styles = StyleSheet.create({
   container: {

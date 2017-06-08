@@ -37,7 +37,7 @@ class Contact extends Component {
           { avatar }
         </View>
         <View style={ styles.nameContainer }>
-          <Text style={ styles.name }>{ this.props.user.name }</Text>
+          <Text style={ styles.name }>{ this.props.user.username }</Text>
         </View>
         <TouchableOpacity style={ [styles.addBtn] }>
           <Icon

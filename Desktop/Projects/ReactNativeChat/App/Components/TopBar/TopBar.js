@@ -7,13 +7,15 @@ import {
 } from 'react-native';
 import { nav } from '../UserMainScreen/UserMainScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 class TopBar extends Component {
   render() {
     return(
       <View style={ styles.container }>
         <TouchableOpacity
-          style={[styles.backBtn , this.props.isArrowVisible ? '' : { display: 'none' }]}
+          style={[styles.backBtn , store.isTopBarArrowVisible ? '' : { display: 'none' }]}
           onPress={ () => nav.pop() }
         >
           <Icon
@@ -31,7 +33,7 @@ class TopBar extends Component {
   }
 }
 
-export default TopBar;
+export default observer(TopBar);
 
 const styles = StyleSheet.create({
   container: {

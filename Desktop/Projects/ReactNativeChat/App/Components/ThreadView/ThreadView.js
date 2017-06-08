@@ -9,6 +9,8 @@ import {
   Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 import Message from './Message';
 
@@ -24,12 +26,12 @@ class ThreadView extends Component {
     }
   }
   componentWillMount() {
-    this.props.bottomBarVisibility();
-    this.props.topBarArrowVisibility();
+    store.isBottombarVisible = false
+    store.isTopBarArrowVisible = true
   }
   componentWillUnmount() {
-    this.props.bottomBarVisibility();
-    this.props.topBarArrowVisibility();
+    store.isBottombarVisible = true
+    store.isTopBarArrowVisible = false
   }
 
   sendMsg(_userName, _msg) {
@@ -81,7 +83,7 @@ class ThreadView extends Component {
   }
 }
 
-export default ThreadView;
+export default observer(ThreadView);
 
 const styles = StyleSheet.create({
   inputContainer: {

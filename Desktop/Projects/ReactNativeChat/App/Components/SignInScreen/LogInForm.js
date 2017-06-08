@@ -31,7 +31,7 @@ class LogInForm extends Component {
         password: _password,
       })
         .then((res) => {
-          AsyncStorage.setItem('token', res.id)
+          AsyncStorage.setItem('token', res)
           this.setState({
             email: null,
             password: null

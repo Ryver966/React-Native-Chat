@@ -8,6 +8,8 @@ import {
   TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 class EditUserProfile extends Component {
 
@@ -25,10 +27,10 @@ class EditUserProfile extends Component {
   }
 
   componentWillMount() {
-    this.props.topBarArrowVisibility();
+    store.isTopBarArrowVisible = true
   }
   componentWillUnmount() {
-    this.props.topBarArrowVisibility();
+    store.isTopBarArrowVisible = false
   }
 
   sendData(_avatar, _email, _name) {
@@ -106,7 +108,7 @@ class EditUserProfile extends Component {
   }
 }
 
-export default EditUserProfile;
+export default observer(EditUserProfile);
 
 const styles = StyleSheet.create({
   container: {
