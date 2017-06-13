@@ -40,11 +40,15 @@ class NewContacts extends Component {
   render() {
 
     const user = this.state.usersList.map((user, index) =>
-      <Contact 
-        user={ user } 
-        key={ index } 
-        new={ true }
-      />
+    {
+      if(user.username !== store.validUser.username) {
+        return <Contact 
+          user={ user } 
+          key={ index } 
+          new={ true }
+        />
+      }
+    }
     )
 
     return(

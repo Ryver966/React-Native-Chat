@@ -10,6 +10,12 @@ const Thread = sequelize.define('thread', {
   },
   messages: {
     type: Sequelize.JSONB
+  },
+  firstUserId: {
+    type: Sequelize.INTEGER
+  },
+  secondUserId: {
+    type: Sequelize.INTEGER
   }
 });
 

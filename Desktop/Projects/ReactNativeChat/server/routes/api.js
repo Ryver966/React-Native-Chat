@@ -92,4 +92,34 @@ router.post('/newFriendship', (req, res, next) => {
   })
 })
 
+router.post('/newThread', (req, res, next) => {
+  console.log(req.body)
+  Thread.findOne({ where: { 
+    firstUserId: req.body.firstId,
+    secondUserId: req.body.secondId 
+  } })
+  .then((thread) => {
+    if(!thread) {
+      Thread.findOne({ where: { 
+        firstUserId: req.body.secondId,
+        secondUserId: req.body.firstId
+      } })
+      .then((secondThread) => {
+        if(!secondThread) {
+          Thread.create({
+            firstUserId: req.body.firstId,
+            secondUserId: req.body.secondId
+          }).then(() => {
+            res.send({ msg: 'Success!' })
+          })
+        } else {
+          res.send({ msg: 'This thread exist.' })
+        }
+      })
+    } else {
+      res.send({ msg: 'This thread exist.' })
+    }
+  })
+})
+
 module.exports = router;
