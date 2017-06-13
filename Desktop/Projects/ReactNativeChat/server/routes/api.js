@@ -6,6 +6,8 @@ const passport = require('passport');
 const session = require('express-session');
 
 const User = require('../models/users');
+const Thread = require('../models/threads');
+const Friendship = require('../models/friendships');
 
 router.get('/users', (req, res, next) => {
   User.findAll().then((users) => res.send(users))
@@ -31,15 +33,15 @@ router.post('/signUp', (req, res, next) => {
           if(!userByName) {
             User.create(req.body)
             .then((user) => {
-              res.send(user)
+              res.json({ msg: 'success' })
             })
             .catch(next)
           } else {
-            res.send({ msg: 'User with this name exist.' })
+            res.json({ msg: 'User with this name exist.' })
           }
         })
       } else {
-        res.send ({ msg: 'User with this email exist.' })
+        res.json({ msg: 'User with this email exist.' })
       }
     })
   }
@@ -80,6 +82,13 @@ router.post('/changePassword/:id', (req, res, next) => {
     } else {
       res.send({ msg: 'Old password does not match.' })
     }
+  })
+});
+
+router.post('/newFriendship', (req, res, next) => {
+  Friendship.create({
+    firstUserId: req.body.firstId,
+    secondUserId: req.body.secondId
   })
 })
 

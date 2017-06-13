@@ -35,7 +35,7 @@ componentWillUnmount() {
 }
 sendData(_oldPwd, _newPwd, confNewPwd) {
   if(_oldPwd && _newPwd && _newPwd === confNewPwd) {
-    changePassword(this.props.user.id, {
+    changePassword(store.validUser.id, {
       oldPwd: _oldPwd,
       newPwd: _newPwd
     }).then((res) => {

@@ -5,11 +5,13 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
+import ImagePicker from 'react-native-image-picker';
 
 class EditUserProfile extends Component {
 
@@ -18,12 +20,31 @@ class EditUserProfile extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.sendData = this.sendData.bind(this);
+    this.selectAvatar = this.selectAvatar.bind(this);
 
     this.state = {
       userAvatar: null,
-      email: 'randomEmail',
-      name: 'randomName'
+      email: store.validUser.email,
+      name: store.validUser.username
     }
+  }
+
+  selectAvatar() {
+    console.log('TEst1')
+    const options = {
+      title: 'Upload Photo',
+      cancelButtonTitle: 'Cancel',
+      takePhotoButtonTitle: 'Take Photo...',
+      chooseFromLibraryButtonTitle: 'Choose from Library...',
+      noData: false,
+      mediaType: 'photo',
+      quality: 0.2
+    }
+
+    ImagePicker.showImagePicker(options, (res) => {
+      console.log(res)
+      this.setState({ userAvatar: res.uri.replace('file://', '') })
+    })
   }
 
   componentWillMount() {
@@ -46,10 +67,10 @@ class EditUserProfile extends Component {
   }
 
   render() {
-
     const avatar = this.state.userAvatar ? 
       <Image
-        source={ require(this.state.userAvatar) }
+        source={{ uri: this.state.userAvatar }}
+        style={ styles.avatar }
       />
       :
       <Icon
@@ -60,7 +81,10 @@ class EditUserProfile extends Component {
 
     return(
       <View style={ styles.container }>
-        <TouchableOpacity style={ styles.avatarContainer }>
+        <TouchableOpacity 
+          style={ styles.avatarContainer }
+          onPress={ () => this.selectAvatar() }
+        >
           { avatar }
         </TouchableOpacity>
         <View style={ styles.fieldContainer }>
@@ -156,5 +180,10 @@ const styles = StyleSheet.create({
   input: {
     flex: 6,
     height: 35
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60
   }
 })

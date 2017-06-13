@@ -9,25 +9,25 @@ export class Store {
       isLoading: true,
       isTopBarArrowVisible: false,
       isBottombarVisible: true,
-      token: null
+      token: null,
+      isUserLoggedIn: false
     })
   }
 
-  setLoading(state) {
-    this.isLoading = state
+  setIsUserLogged() {
+    if(this.token) {
+      this.isUserLoggedIn = true
+      this.isLoading = false
+    } else {
+      this.isLoading = false
+    }
   }
-
-  setTopBarArrowVisibility() {
-    this.isTopBarArrowVisible = !this.isTopBarArrowVisible
-  };
-
-  setBottomBarVisibility() {
-    this.isBottombarVisible = !this.isBottombarVisible
-  };
 
   setValidUser(id) {
     getValidUser(id).then((user) => {
-      this.validUser = user
+      if(user) {
+        this.validUser = user
+      }
     })
   };
 };

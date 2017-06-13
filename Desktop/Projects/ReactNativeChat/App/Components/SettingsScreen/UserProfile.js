@@ -8,6 +8,8 @@ import {
   AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 import TopBtns from '../TopBtns/TopBtns';
 import UserOption from './UserOption';
@@ -22,6 +24,7 @@ class UserProfile extends Component {
 
   signOut() {
     AsyncStorage.setItem('token', '');
+    store.isUserLoggedIn = false
   }
 
   render() {
@@ -71,7 +74,7 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+export default observer(UserProfile);
 
 const styles = StyleSheet.create({
   container: {

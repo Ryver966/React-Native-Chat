@@ -10,7 +10,7 @@ export function createUser(user) {
     },
     body: JSON.stringify(user)
   })
-  .then((response) => response.json)
+  .then((response) => response.json())
   .catch((err) => console.log(err))
 };
 
@@ -59,6 +59,19 @@ export function changePassword(id, editedUser) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(editedUser)
+  })
+  .then((response) => response.json())
+  .catch((err) => console.log(err))
+};
+
+export function createFriendship(friendship) {
+  return fetch(`${ url }newFriendship`, {
+    method: "POST",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(friendship)
   })
   .then((response) => response.json())
   .catch((err) => console.log(err))

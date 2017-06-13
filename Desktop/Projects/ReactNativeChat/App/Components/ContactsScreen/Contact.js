@@ -7,15 +7,27 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
+import { createFriendship } from '../../../server/actions/actions';
 
 class Contact extends Component {
 
   constructor(props) {
     super(props);
 
+    this.addFriend = this.addFriend.bind(this);
+
     this.state = {
       isUserAvatar: null
     }
+  }
+
+  addFriend(_firstId, _secondId) {
+    createFriendship({
+      firstId: _firstId,
+      secondId: _secondId
+    })
   }
 
   render() {
@@ -39,7 +51,9 @@ class Contact extends Component {
         <View style={ styles.nameContainer }>
           <Text style={ styles.name }>{ this.props.user.username }</Text>
         </View>
-        <TouchableOpacity style={ [styles.addBtn] }>
+        <TouchableOpacity 
+          style={ [styles.addBtn] }
+          onPress={ () => this.addFriend(store.validUser.id, this.props.user.id) }>
           <Icon
             name='plus'
             size={ 30 }
@@ -51,7 +65,7 @@ class Contact extends Component {
   }
 }
 
-export default Contact;
+export default observer(Contact);
 
 const styles = StyleSheet.create({
   container: {

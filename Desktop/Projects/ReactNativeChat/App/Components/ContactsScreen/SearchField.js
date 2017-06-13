@@ -10,21 +10,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 class SearchField extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-
-    this.state = {
-      searchField: null
-    }
-  }
-
-  onChange(val) {
-    this.setState({ searchField: val })
-    this.props.onInputChange(val)
-  }
-
   render() {
     return(
       <View style={ styles.searchFieldContainer }>
@@ -32,8 +17,7 @@ class SearchField extends Component {
           style={ styles.input }
           placeholder={ this.props.txt }
           underlineColorAndroid='transparent'
-          onChange={ (e) => this.onChange(e.nativeEvent.text) }
-          value={ this.state.searchField }
+          onChange={ (e) => this.props.onInputChange(e.nativeEvent.text) }
         />
          <View style={ styles.searchBtn }>
           <Icon

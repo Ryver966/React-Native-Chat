@@ -34,24 +34,17 @@ class App extends Component {
     super(props);
 
     this.renderScene = this.renderScene.bind(this);
-
-    this.state = {
-      isUserLogged: false,
-      isBottombarVisible: true,
-      isTopBarArrowVisible: false,
-    }
   }
+
   componentWillMount() {
-    setTimeout(() =>{ this.setState({ isLoading: false }) }, 1000);
     getUsers().then((res) => store.allUsers = res);
     AsyncStorage.getItem('token'). then((val) => {
       if(val) {
-        store.isLoading = false
         store.token = val
         store.setValidUser(val)
-        this.setState({ isUserLogged: true })
+        store.setIsUserLogged()
       } else {
-        store.isLoading = false
+        store.setIsUserLogged()
       }
     })
   }
@@ -79,10 +72,7 @@ class App extends Component {
       case 'thread':
       return <ThreadView navigator={ navigator } />
       case 'changePassword':
-      return <ChangePassword 
-        navigator={ navigator } 
-        user={ this.state.user } 
-      />
+      return <ChangePassword navigator={ navigator } />
     }
   }
 
@@ -94,14 +84,14 @@ class App extends Component {
             <LoadingScreen />
           </View>
         )
-      } else if(!store.isLoading && this.state.isUserLogged) {
+      } else if(!store.isLoading && store.isUserLoggedIn) {
         return(
           <View style={ styles.container }>
             <StatusBar
               barStyle='light-content'
             />
             <View style={{ flex: 1 }}>
-              <TopBar isArrowVisible={ this.state.isTopBarArrowVisible } />
+              <TopBar />
             </View>
             <Navigator
               initialRoute={{ id: 'mainUserScreen' }}

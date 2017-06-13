@@ -9,6 +9,8 @@ import {
   AsyncStorage
 } from 'react-native';
 import { authUser } from '../../../server/actions/actions';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 class LogInForm extends Component {
 
@@ -31,11 +33,16 @@ class LogInForm extends Component {
         password: _password,
       })
         .then((res) => {
-          AsyncStorage.setItem('token', res)
-          this.setState({
-            email: null,
-            password: null
-          })
+          if(res) {
+            AsyncStorage.setItem('token', res)
+            this.setState({
+              email: null,
+              password: null
+            })
+            store.isUserLoggedIn = true
+          } else {
+            Alert.alert('Login failed. Email or password is incorrect.')
+          }
         })
         .catch(() => {
           Alert.alert('Something gone wrong!')
@@ -78,7 +85,7 @@ john
   }
 }
 
-export default LogInForm;
+export default observer(LogInForm);
 
 const styles = StyleSheet.create({
   container: {

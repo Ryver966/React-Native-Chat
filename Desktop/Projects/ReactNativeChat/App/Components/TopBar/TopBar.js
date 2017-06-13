@@ -15,7 +15,7 @@ class TopBar extends Component {
     return(
       <View style={ styles.container }>
         <TouchableOpacity
-          style={[styles.backBtn , store.isTopBarArrowVisible ? '' : { display: 'none' }]}
+          style={ store.isTopBarArrowVisible ? '' : { display: 'none' }}
           onPress={ () => nav.pop() }
         >
           <Icon
@@ -50,5 +50,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 6,
     textAlign: 'center'
-  }
+  },
 })
