@@ -6,12 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Image
+  Image, 
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
 import ImagePicker from 'react-native-image-picker';
+import { editProfile } from '../../../server/actions/actions';
 
 class EditUserProfile extends Component {
 
@@ -23,14 +25,13 @@ class EditUserProfile extends Component {
     this.selectAvatar = this.selectAvatar.bind(this);
 
     this.state = {
-      userAvatar: null,
+      userAvatar: store.validUser.avatar,
       email: store.validUser.email,
       name: store.validUser.username
     }
   }
 
   selectAvatar() {
-    console.log('TEst1')
     const options = {
       title: 'Upload Photo',
       cancelButtonTitle: 'Cancel',
@@ -42,8 +43,9 @@ class EditUserProfile extends Component {
     }
 
     ImagePicker.showImagePicker(options, (res) => {
-      console.log(res)
-      this.setState({ userAvatar: res.uri.replace('file://', '') })
+      if(!res.didCancel) {
+        this.setState({ userAvatar: res.uri.replace('file://', '') })
+      }
     })
   }
 
@@ -54,12 +56,21 @@ class EditUserProfile extends Component {
     store.isTopBarArrowVisible = false
   }
 
-  sendData(_avatar, _email, _name) {
-    console.log({ 
+  sendData(_avatar, _email, _username) {
+    editProfile(store.validUser.id, { 
       avatar: _avatar,
       email: _email,
-      name: _name 
+      username: _username 
     })
+    .then((res) => {
+      if(res.msg == 'success') {
+        store.setValidUser(store.validUser.id)
+        this.props.navigator.pop()
+      } else {
+        Alert.alert(res.msg)
+      }
+    })
+    .catch((err) => console.log(err))
   }
 
   onChange(field, val) {
@@ -67,6 +78,7 @@ class EditUserProfile extends Component {
   }
 
   render() {
+    console.log(store.validUser.avatar)
     const avatar = this.state.userAvatar ? 
       <Image
         source={{ uri: this.state.userAvatar }}
@@ -123,7 +135,7 @@ class EditUserProfile extends Component {
         </View>
         <TouchableOpacity
           style={ styles.btn }
-          onPress={ () => this.sendData(this.state.avatar, this.state.email, this.state.name) }
+          onPress={ () => this.sendData(this.state.userAvatar, this.state.email, this.state.name) }
         >
           <Text style={ styles.btnTxt }>Send</Text>
         </TouchableOpacity>

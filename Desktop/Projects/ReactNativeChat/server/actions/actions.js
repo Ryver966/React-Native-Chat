@@ -29,14 +29,14 @@ export function authUser(user) {
 
 export function editProfile(userId, editedUser) {
   return fetch(`${url}users/${userId}`, {
-    method: "PUT",
+    method: "POST",
     headers: {
       'Accept': 'application.json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(editedUser)
   })
-  .then((response) => response.json)
+  .then((response) => response.json())
   .catch((err) => console.log(err))
 };
 

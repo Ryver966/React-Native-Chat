@@ -19,6 +19,10 @@ const User = sequelize.define('user', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  avatar: {
+    type: Sequelize.STRING,
+    allowNull: true
   }
 });
 

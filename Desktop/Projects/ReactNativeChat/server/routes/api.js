@@ -47,10 +47,43 @@ router.post('/signUp', (req, res, next) => {
   }
 });
 
-router.put('/users/:id', (req, res, next) => {
-  User.findByIdAndUpdate({ _id: req.params.id }, req.body)
+router.post('/users/:id', (req, res, next) => {
+  User.findOne({ where: { id: req.params.id } })
   .then((user) => {
-    res.json(user);
+    console.log(req.body)
+
+    req.checkBody('email', 'Email is not valid.').isEmail();
+
+    const errors = req.validationErrors();
+
+    if(errors) {
+      res.send(errors)
+    } else {
+      User.findOne({ where: { username: req.body.username } })
+      .then((checkUserName) => {
+        if(!checkUserName || checkUserName.id === req.params.id) {
+          User.findOne({ where: { email: req.body.email } })
+          .then((checkUserEmail) => {
+            if(!checkUserEmail || checkUserEmail.id === req.params.id) {
+              user.updateAttributes({
+                email: req.body.email,
+                username: req.body.username,
+                avatar: req.body.avatar
+              })
+              .then(() => {
+                res.send({ msg: 'success' })
+              })
+              .catch((err) => console.log(err))
+            } else {
+              res.send({ msg: 'User with this email does exist.' })
+            }
+          })
+          .catch((err) => console.log(err))
+        } else {
+          res.send({ msg: 'User with this name does exist.' })
+        }
+      })
+    }
   })
 });
 
@@ -63,10 +96,12 @@ router.post('/signIn', passport.authenticate('local'),
 router.get('/validUser/:id', (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
   .then((user) => {
+    console.log(user)
     res.send({
       email: user.email,
       username: user.username,
-      id: user.id
+      id: user.id,
+      avatar: user.avatar
     });
   })
 });
@@ -75,6 +110,8 @@ router.post('/changePassword/:id', (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
   .then((user) => {
     if(req.body.oldPwd === user.password) {
+      req.checkBody('password', 'Password must have minimum 6 charts').isLength(6, 20);
+
       user.updateAttributes({
         password: req.body.newPwd
       })
