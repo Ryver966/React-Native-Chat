@@ -78,7 +78,6 @@ class EditUserProfile extends Component {
   }
 
   render() {
-    console.log(store.validUser.avatar)
     const avatar = this.state.userAvatar ? 
       <Image
         source={{ uri: this.state.userAvatar }}

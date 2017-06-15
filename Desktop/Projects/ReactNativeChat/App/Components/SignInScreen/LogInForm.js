@@ -51,7 +51,7 @@ class LogInForm extends Component {
       Alert.alert('Check all fields!')
     }
   }
-john
+  
   onChange(fieldName, val) {
     this.setState({ [fieldName]: val })
   }

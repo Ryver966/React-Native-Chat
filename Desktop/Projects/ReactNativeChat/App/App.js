@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  AsyncStorage
+  AsyncStorage,
+  AppState,
 } from 'react-native';
 import { Navigator } from 'react-native-deprecated-custom-components';
 import { 
@@ -12,6 +13,8 @@ import {
 } from '../server/actions/actions';
 import store from './mobX/store';
 import { observer } from 'mobx-react';
+import PushNotificationController from './Components/PushNotificationController/PushNotificationController';
+import PushNotification from 'react-native-push-notification';
 
 import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
@@ -34,9 +37,24 @@ class App extends Component {
     super(props);
 
     this.renderScene = this.renderScene.bind(this);
+    this.handleAppState = this.handleAppState.bind(this);
+
+  }
+
+  handleAppState(currentState){
+    if(currentState === 'background') { 
+      PushNotification.localNotification({
+        message: 'Test msg. Asd zxc, zxc asd.',
+        number: 1,
+        playSound: store.soundsSetting,
+        vibrate: store.vibrateSetting,
+        vibration: 300
+      })
+    }
   }
 
   componentWillMount() {
+    store.settingsState()
     getUsers().then((res) => store.allUsers = res);
     AsyncStorage.getItem('token'). then((val) => {
       if(val) {
@@ -47,6 +65,14 @@ class App extends Component {
         store.setIsUserLogged()
       }
     })
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this.handleAppState);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppState);
   }
 
   renderScene(route, navigator) {
@@ -101,6 +127,7 @@ class App extends Component {
             <View style={ [styles.bottomContainer, store.isBottombarVisible ? '' : { display: 'none' }] }>
               <BottomBar />
             </View>
+            <PushNotificationController />
           </View>
         )
       } else {
@@ -113,6 +140,7 @@ class App extends Component {
               initialRoute={{ id: 'signInScreen' }}
               renderScene={ this.renderScene }
             />
+            <PushNotificationController />
           </View>
         )
       }

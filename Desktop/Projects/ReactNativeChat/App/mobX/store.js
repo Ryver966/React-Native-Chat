@@ -1,5 +1,6 @@
 import { extendObservable } from 'mobx';
 import { getValidUser } from '../../server/actions/actions';
+import { AsyncStorage } from 'react-native'
 
 export class Store {
   constructor() {
@@ -10,8 +11,34 @@ export class Store {
       isTopBarArrowVisible: false,
       isBottombarVisible: true,
       token: null,
-      isUserLoggedIn: false
+      isUserLoggedIn: false,
+      soundsSetting: false,
+      vibrateSetting: false,
+      notificationsSetting: false,
+      locationSetting: false
     })
+  }
+
+  settingsState() {
+    AsyncStorage.getItem('settings')
+    .then((result) => {
+      if(result === null) {
+        AsyncStorage.setItem('settings', JSON.stringify({
+          sounds: true,
+          vibrate: true,
+          notifications: true,
+          location: true
+        }))
+      } else {
+        const res = JSON.parse(result);
+
+        this.soundsSetting = res.sounds;
+        this.vibrateSetting = res.vibrate;
+        this.notificationsSetting = res.notifications;
+        this.locationSetting = res.location;
+      }
+    })
+    .catch((err) => console.log(err))
   }
 
   setIsUserLogged() {

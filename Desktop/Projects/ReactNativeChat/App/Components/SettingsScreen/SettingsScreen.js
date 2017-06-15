@@ -5,6 +5,8 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 import TopBtns from '../TopBtns/TopBtns';
 import Setting from './Setting';
@@ -24,22 +26,27 @@ class SettingsScreen extends Component {
           <Setting
             name='volume-up'
             txt='Aplication Sounds'
+            state={ store.soundsSetting }
+            storageContainer='sounds'
           />
           <Setting
             name='mobile-phone'
             txt='Vibrations'
+            state={ store.vibrateSetting }
+            storageContainer='vibrate'
           />
           <Setting
             name='envelope'
             txt='Notifications'
-          />
-          <Setting
-            name='globe'
-            txt='Links Open In Browser'
+            state={ store.notificationsSetting }
+            storageContainer='notifications'
           />
           <Setting
             name='map-marker'
             txt='Your Location'
+            state={ store.locationSetting }
+            storageContainer='location'
+
           />
         </ScrollView>
       </View>
@@ -47,7 +54,7 @@ class SettingsScreen extends Component {
   }
 }
 
-export default SettingsScreen;
+export default observer(SettingsScreen);
 
 const styles = StyleSheet.create({
   container: {
