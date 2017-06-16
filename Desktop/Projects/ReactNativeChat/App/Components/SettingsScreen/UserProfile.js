@@ -10,6 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
+import { changeOnlineStatus } from '../../../server/actions/actions';
 
 import TopBtns from '../TopBtns/TopBtns';
 import UserOption from './UserOption';
@@ -23,7 +24,11 @@ class UserProfile extends Component {
   }
 
   signOut() {
+    AsyncStorage.getItem('token').then((result) => {
+      changeOnlineStatus(result)
+    });
     AsyncStorage.setItem('token', '');
+
     store.isUserLoggedIn = false
   }
 

@@ -8,7 +8,10 @@ import {
   Alert,
   AsyncStorage
 } from 'react-native';
-import { authUser } from '../../../server/actions/actions';
+import { 
+  authUser,
+  changeOnlineStatus
+} from '../../../server/actions/actions';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
 
@@ -35,6 +38,9 @@ class LogInForm extends Component {
         .then((res) => {
           if(res) {
             AsyncStorage.setItem('token', res)
+            AsyncStorage.getItem('token').then((result) => {
+              changeOnlineStatus(result);
+            })
             this.setState({
               email: null,
               password: null

@@ -9,7 +9,8 @@ import {
 import { Navigator } from 'react-native-deprecated-custom-components';
 import { 
   getUsers, 
-  getValidUser 
+  getValidUser,
+  changeOnlineStatus 
 } from '../server/actions/actions';
 import store from './mobX/store';
 import { observer } from 'mobx-react';
@@ -43,12 +44,19 @@ class App extends Component {
 
   handleAppState(currentState){
     if(currentState === 'background') { 
+      AsyncStorage.getItem('token').then((result) => {
+        changeOnlineStatus(result)
+      })
       PushNotification.localNotification({
         message: 'Test msg. Asd zxc, zxc asd.',
         number: 1,
         playSound: store.soundsSetting,
         vibrate: store.vibrateSetting,
         vibration: 300
+      })
+    } else if(currentState === 'active') {
+      AsyncStorage.getItem('token').then((result) => {
+        changeOnlineStatus(result)
       })
     }
   }

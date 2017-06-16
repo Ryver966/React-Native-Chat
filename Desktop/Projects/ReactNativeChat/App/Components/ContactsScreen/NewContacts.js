@@ -46,6 +46,7 @@ class NewContacts extends Component {
           user={ user } 
           key={ index } 
           new={ true }
+          isFriend={ false }
         />
       }
     }

@@ -23,6 +23,10 @@ const User = sequelize.define('user', {
   avatar: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+  onlineStatus: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 

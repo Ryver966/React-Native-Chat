@@ -130,7 +130,6 @@ router.post('/newFriendship', (req, res, next) => {
 })
 
 router.post('/newThread', (req, res, next) => {
-  console.log(req.body)
   Thread.findOne({ where: { 
     firstUserId: req.body.firstId,
     secondUserId: req.body.secondId 
@@ -157,6 +156,15 @@ router.post('/newThread', (req, res, next) => {
       res.send({ msg: 'This thread exist.' })
     }
   })
+});
+
+router.post('/onlineStatus/:id', (req, res, next) => {
+  User.findOne({ where: { id: req.params.id } })
+  .then((user) => {
+    user.updateAttributes({ onlineStatus: !user.onlineStatus })
+    res.send({ msg: 'Status changed.' })
+  })
+  .catch((err) => console.log(err))
 })
 
 module.exports = router;

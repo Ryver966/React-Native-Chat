@@ -52,11 +52,24 @@ class Contact extends Component {
           <Text style={ styles.name }>{ this.props.user.username }</Text>
         </View>
         <TouchableOpacity 
-          style={ [styles.addBtn] }
+          style={ [styles.addBtn, this.props.isFriend ? { display: 'none' } : ''] }
           onPress={ () => this.addFriend(store.validUser.id, this.props.user.id) }>
           <Icon
             name='plus'
             size={ 30 }
+            color='#57AF21'
+          />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={ [
+            styles.addBtn, 
+            this.props.isFriend ? '' : { display: 'none' },
+            this.props.user.onlineStatus ? '' : { display: 'none' }
+          ] }
+          onPress={ () => this.addFriend(store.validUser.id, this.props.user.id) }>
+          <Icon
+            name='circle'
+            size={ 15 }
             color='#57AF21'
           />
         </TouchableOpacity>

@@ -76,3 +76,16 @@ export function createFriendship(friendship) {
   .then((response) => response.json())
   .catch((err) => console.log(err))
 };
+
+export function changeOnlineStatus(id) {
+  return fetch(`${ url }onlineStatus/${ id }`, {
+    method: "POST",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({})
+  })
+  .then((response) => response.json)
+  .catch((err) => console.log(err))
+};
