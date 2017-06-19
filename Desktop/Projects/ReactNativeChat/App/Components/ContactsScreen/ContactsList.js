@@ -2,14 +2,47 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 
 import TopBtns from '../TopBtns/TopBtns';
 import SearchField from './SearchField';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
+import { getUserFriends } from '../../../server/actions/actions';
+
+import Contact from './Contact';
 
 class ContactsList extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      friendships: []
+    }
+  }
+
+  componentWillMount() {
+    getUserFriends(store.validUser.id)
+    .then((friends) => {
+      this.setState({ friendships: friends })
+    })
+  }
+
   render() {
+
+    const friends = this.state.friendships.map((friend, index) =>
+    {
+      return <Contact
+        user={ friend }
+        key={ index }
+        isFriend={ true }
+      />
+    }
+    )
+
     return(
       <View style={ styles.container }>
         <View style={ styles.top }>
@@ -19,13 +52,18 @@ class ContactsList extends Component {
             routesId={ ['contactsList', 'newContacts'] }
           />
         </View>
-        <SearchField txt={ 'Search Friend' } />
+        <SearchField 
+          txt={ 'Search Friend' } 
+        />
+        <ScrollView>
+          { friends }
+        </ScrollView>
       </View>
     )
   }
 }
 
-export default ContactsList;
+export default observer(ContactsList);
 
 const styles = StyleSheet.create({
   container: {

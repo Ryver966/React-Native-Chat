@@ -65,7 +65,7 @@ class NewContacts extends Component {
             txt={ 'Search New Friend' } 
             onInputChange={ this.onInputChange }
           />
-          <ScrollView style={ styles.usersList }>
+          <ScrollView>
             { user }
           </ScrollView>
       </View>
@@ -82,8 +82,5 @@ const styles = StyleSheet.create({
   },
   top: {
     flexDirection: 'row'
-  },
-  usersList: {
-    
   }
 })

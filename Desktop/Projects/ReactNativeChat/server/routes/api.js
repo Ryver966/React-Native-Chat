@@ -158,6 +158,30 @@ router.post('/newThread', (req, res, next) => {
   })
 });
 
+router.get('/getFriends/:id', (req, res, next) => {
+  const friends = [];
+  Friendship.findAll({ where: { firstUserId: req.params.id } })
+  .then((friendships1) => {
+    friendships1.map(friendship => 
+      User.findOne({ where: { id: friendship.secondUserId } })
+      .then((user) => {
+        friends.push(user)
+      })
+    )
+      Friendship.findAll({ where: { secondUserId: req.params.id } })
+      .then((friendships2) => {
+        friendships2.map((friendship => 
+          User.findOne({ where: { id: friendship.firstUserId } })
+          .then((user) => {
+            friends.push(user)
+          })
+        ))
+        res.send(friends)
+     })
+  })
+  .catch((err) => console.log(err))
+})
+
 router.post('/onlineStatus/:id', (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
   .then((user) => {
@@ -165,6 +189,6 @@ router.post('/onlineStatus/:id', (req, res, next) => {
     res.send({ msg: 'Status changed.' })
   })
   .catch((err) => console.log(err))
-})
+});
 
 module.exports = router;
