@@ -9,24 +9,25 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
-import { createFriendship } from '../../../server/actions/actions';
+import { addFriend } from '../../../server/actions/actions';
 
 class Contact extends Component {
 
   constructor(props) {
     super(props);
 
-    this.addFriend = this.addFriend.bind(this);
+    this.getFriend = this.getFriend.bind(this);
 
     this.state = {
       isUserAvatar: null
     }
   }
 
-  addFriend(_firstId, _secondId) {
-    createFriendship({
-      firstId: _firstId,
-      secondId: _secondId
+  getFriend(id, secondUsrId) {
+    addFriend(id, secondUsrId)
+    .then(() => {
+      addFriend(secondUsrId, id)
+      .then(() => store.setValidUser(store.validUser.id))
     })
   }
 
@@ -53,7 +54,7 @@ class Contact extends Component {
         </View>
         <TouchableOpacity 
           style={ [styles.addBtn, this.props.isFriend ? { display: 'none' } : ''] }
-          onPress={ () => this.addFriend(store.validUser.id, this.props.user.id) }>
+          onPress={ () => this.getFriend(store.validUser.id, this.porps.user.id)}>
           <Icon
             name='plus'
             size={ 30 }
@@ -66,7 +67,7 @@ class Contact extends Component {
             this.props.isFriend ? '' : { display: 'none' },
             this.props.user.onlineStatus ? '' : { display: 'none' }
           ] }
-          onPress={ () => this.addFriend(store.validUser.id, this.props.user.id) }>
+          onPress={ () => addFriend(store.validUser.id, this.props.user.id).then((res) => console.log(res)) }>
           <Icon
             name='circle'
             size={ 15 }

@@ -33,11 +33,12 @@ class LogInForm extends Component {
     if(_email && _password) {
       authUser({ 
         email: _email,
-        password: _password,
+        password: _password
       })
         .then((res) => {
+          console.log(res)
           if(res) {
-            AsyncStorage.setItem('token', res)
+            AsyncStorage.setItem('token', JSON.stringify(res))
             AsyncStorage.getItem('token').then((result) => {
               changeOnlineStatus(result);
             })

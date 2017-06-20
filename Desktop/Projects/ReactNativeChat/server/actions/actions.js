@@ -64,14 +64,14 @@ export function changePassword(id, editedUser) {
   .catch((err) => console.log(err))
 };
 
-export function createFriendship(friendship) {
-  return fetch(`${ url }newFriendship`, {
-    method: "POST",
+export function addFriend(id, invitedUsrId) {
+  return fetch(`${ url }userFriendship/${ id }`, {
+    method: "PUT",
     headers: {
       'Accept': 'application.json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(friendship)
+    body: JSON.stringify({ friendId: invitedUsrId })
   })
   .then((response) => response.json())
   .catch((err) => console.log(err))
@@ -87,17 +87,5 @@ export function changeOnlineStatus(id) {
     body: JSON.stringify({})
   })
   .then((response) => response.json)
-  .catch((err) => console.log(err))
-};
-
-export function getUserFriends(id) {
-  return fetch(`${ url }getFriends/${ id }`, {
-    method: "GET",
-    headers: {
-      'Accept': 'application.json',
-      'Content-Type': 'application/json'
-    },
-  })
-  .then((response) => response.json())
   .catch((err) => console.log(err))
 };

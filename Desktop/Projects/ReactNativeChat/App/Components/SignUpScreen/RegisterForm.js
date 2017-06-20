@@ -30,7 +30,7 @@ class RegisterForm extends Component {
       createUser({ 
         email: _email,
         password: pass,
-        username: `${ _name.charAt(0).toUpperCase()+_name.slice(1) }`,
+        username: `${ _name.charAt(0).toUpperCase()+_name.slice(1) }`
       })
         .then((res) => {
           if(res.msg === 'success') {
@@ -42,11 +42,13 @@ class RegisterForm extends Component {
             })
             this.props.navigator.replace({ id: 'signInScreen' })
           } else {
-            Alert.alert(res[0].msg)
+            //Alert.alert(res[0].msg)
+            console.log(res)
           }
         })
-        .catch(() => {
-          Alert.alert('User with this email / name does exist.')
+        .catch((err) => {
+          //Alert.alert('User with this email / name does exist.')
+          console.log(err)
         })
     } else {
       Alert,alert('Check all fields!')

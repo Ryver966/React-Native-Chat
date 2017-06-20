@@ -80,7 +80,7 @@ passport.use(new LocalStrategy(
   },
   (username, password, done) => {
     User.findOne({ where: { email: username } }).then((user) => {
-      console.log(username)
+      console.log(user)
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }

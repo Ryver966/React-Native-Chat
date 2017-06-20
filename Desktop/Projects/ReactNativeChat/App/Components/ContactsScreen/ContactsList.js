@@ -25,10 +25,7 @@ class ContactsList extends Component {
   }
 
   componentWillMount() {
-    getUserFriends(store.validUser.id)
-    .then((friends) => {
-      this.setState({ friendships: friends })
-    })
+    this.setState({ friendships: store.validUser.friends })
   }
 
   render() {

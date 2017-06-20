@@ -2,11 +2,19 @@ const Sequelize = require('sequelize');
 const sequelize = require('../db_config');
 
 const Friendship = sequelize.define('friendship', {
-  firstUserId: {
-    type: Sequelize.INTEGER
+  isAccept: {
+    type: Sequelize.BOOLEAN,
+    default: false
   },
-  secondUserId: {
-    type: Sequelize.INTEGER
+  friendshipId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 

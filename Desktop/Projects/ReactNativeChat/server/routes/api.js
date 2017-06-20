@@ -10,7 +10,7 @@ const Thread = require('../models/threads');
 const Friendship = require('../models/friendships');
 
 router.get('/users', (req, res, next) => {
-  User.findAll().then((users) => res.send(users))
+  User.findAll({ where: req.query, include: [{ all: true }] }).then((users) => res.send(users))
 });
 
 router.post('/signUp', (req, res, next) => {
@@ -33,15 +33,15 @@ router.post('/signUp', (req, res, next) => {
           if(!userByName) {
             User.create(req.body)
             .then((user) => {
-              res.json({ msg: 'success' })
+              res.send({ msg: 'success' })
             })
             .catch(next)
           } else {
-            res.json({ msg: 'User with this name exist.' })
+            res.send({ msg: 'User with this name exist.' })
           }
         })
       } else {
-        res.json({ msg: 'User with this email exist.' })
+        res.send({ msg: 'User with this email exist.' })
       }
     })
   }
@@ -94,14 +94,15 @@ router.post('/signIn', passport.authenticate('local'),
 );
 
 router.get('/validUser/:id', (req, res, next) => {
-  User.findOne({ where: { id: req.params.id } })
+  User.findOne({ where: { id: req.params.id }, include: [{ all: true }] })
   .then((user) => {
     console.log(user)
     res.send({
       email: user.email,
       username: user.username,
       id: user.id,
-      avatar: user.avatar
+      avatar: user.avatar,
+      friends: user.friends
     });
   })
 });
@@ -121,13 +122,6 @@ router.post('/changePassword/:id', (req, res, next) => {
     }
   })
 });
-
-router.post('/newFriendship', (req, res, next) => {
-  Friendship.create({
-    firstUserId: req.body.firstId,
-    secondUserId: req.body.secondId
-  })
-})
 
 router.post('/newThread', (req, res, next) => {
   Thread.findOne({ where: { 
@@ -158,29 +152,13 @@ router.post('/newThread', (req, res, next) => {
   })
 });
 
-router.get('/getFriends/:id', (req, res, next) => {
-  const friends = [];
-  Friendship.findAll({ where: { firstUserId: req.params.id } })
-  .then((friendships1) => {
-    friendships1.map(friendship => 
-      User.findOne({ where: { id: friendship.secondUserId } })
-      .then((user) => {
-        friends.push(user)
-      })
-    )
-      Friendship.findAll({ where: { secondUserId: req.params.id } })
-      .then((friendships2) => {
-        friendships2.map((friendship => 
-          User.findOne({ where: { id: friendship.firstUserId } })
-          .then((user) => {
-            friends.push(user)
-          })
-        ))
-        res.send(friends)
-     })
+router.get('/getThreads/:id', (req, res, next) => {
+  const threads = [];
+  Thread.findAll({ where: { id: 9 } })
+  .then((threads1) => {
+    
+    })
   })
-  .catch((err) => console.log(err))
-})
 
 router.post('/onlineStatus/:id', (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
@@ -190,5 +168,13 @@ router.post('/onlineStatus/:id', (req, res, next) => {
   })
   .catch((err) => console.log(err))
 });
+
+router.put('/userFriendship/:id', (req, res, next) => {
+  User.findOne({ where: { id: req.params.id } })
+  .then((user) => {
+    return user.addFriend(req.body.friendId)
+  })
+  .then(res.send.bind(res))
+})
 
 module.exports = router;
