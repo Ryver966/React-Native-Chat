@@ -63,10 +63,10 @@ router.post('/users/:id', (req, res, next) => {
       User.findOne({ where: { username: req.body.username } })
       .then((checkUserName) => {
         console.log(checkUserName)
-        if(!checkUserName || checkUserName.username === req.body.username) {
+        if(checkUserName == null || req.params.id == checkUserName.id) {
           User.findOne({ where: { email: req.body.email } })
           .then((checkUserEmail) => {
-            if(!checkUserEmail || checkUserName.email === req.body.email) {
+            if(checkUserEmail == null|| req.params.id == checkUserEmail.id) {
               user.updateAttributes({
                 email: req.body.email,
                 username: req.body.username,

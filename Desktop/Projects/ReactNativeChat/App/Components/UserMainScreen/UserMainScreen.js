@@ -5,6 +5,9 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import { getUserThreads } from '../../../server/actions/actions';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 import TopBar from '../TopBar/TopBar';
 import Thread from './Thread';
@@ -12,6 +15,16 @@ import Thread from './Thread';
 export let nav;
 
 class UserMainScreen extends Component {
+
+  componentWillMount() {
+    console.log(store.validUser)
+    getUserThreads(store.validUser.id)
+    .then((threads) => {
+      console.log(threads)
+    })
+    .catch((err) => console.log(err))
+  }
+
   render() {
     nav = this.props.navigator;
     return(
@@ -48,7 +61,7 @@ class UserMainScreen extends Component {
   }
 }
 
-export default UserMainScreen;
+export default observer(UserMainScreen);
 
 const styles = StyleSheet.create({
   container: {

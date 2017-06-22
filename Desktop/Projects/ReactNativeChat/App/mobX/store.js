@@ -44,7 +44,6 @@ export class Store {
   setIsUserLogged() {
     if(this.token) {
       this.isUserLoggedIn = true
-      this.isLoading = false
     } else {
       this.isLoading = false
     }
@@ -54,6 +53,9 @@ export class Store {
     getValidUser(id).then((user) => {
       if(user) {
         this.validUser = user
+        this.isLoading = false
+      } else {
+        this.isLoading = false
       }
     })
   };

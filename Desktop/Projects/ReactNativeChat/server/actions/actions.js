@@ -89,3 +89,16 @@ export function changeOnlineStatus(id) {
   .then((response) => response.json)
   .catch((err) => console.log(err))
 };
+
+export function getUserThreads(id) {
+  return fetch(`${ url }getUserThreads/${ id }`, {
+    method: "GET",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify()
+  })
+  .then((response) => response.json())
+  .catch((err) => console.log(err))
+};

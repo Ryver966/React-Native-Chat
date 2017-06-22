@@ -64,13 +64,13 @@ class App extends Component {
   componentWillMount() {
     store.settingsState()
     getUsers().then((res) => store.allUsers = res);
-    AsyncStorage.getItem('token'). then((val) => {
+    AsyncStorage.getItem('token')
+    .then((val) => {
       if(val) {
         store.token = val
         store.setValidUser(val)
-        store.setIsUserLogged()
       } else {
-        store.setIsUserLogged()
+        store.setValidUser()
       }
     })
   }
@@ -118,7 +118,7 @@ class App extends Component {
             <LoadingScreen />
           </View>
         )
-      } else if(!store.isLoading && store.isUserLoggedIn) {
+      } else if(!store.isLoading && store.validUser) {
         return(
           <View style={ styles.container }>
             <StatusBar

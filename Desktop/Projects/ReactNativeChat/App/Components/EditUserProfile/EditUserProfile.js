@@ -57,6 +57,7 @@ class EditUserProfile extends Component {
   }
 
   sendData(_avatar, _email, _username) {
+    
     editProfile(store.validUser.id, { 
       avatar: _avatar,
       email: _email,
