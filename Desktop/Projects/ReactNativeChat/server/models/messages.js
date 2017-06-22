@@ -15,6 +15,9 @@ const Message = sequelize.define('message', {
   date: {
     type: Sequelize.DATE,
     allowNull: false
+  },
+  threadId: {
+    type: Sequelize.INTEGER
   }
 });
 

@@ -41,7 +41,12 @@ class NewContacts extends Component {
 
     const user = this.state.usersList.map((user, index) =>
     {
-      if(user.username !== store.validUser.username) {
+
+      const isUserFriend = store.validUser.friends.find((element) => {
+        element.id === user.id
+      });
+
+      if(user.username !== store.validUser.username && !isUserFriend) {
         return <Contact 
           user={ user } 
           key={ index } 

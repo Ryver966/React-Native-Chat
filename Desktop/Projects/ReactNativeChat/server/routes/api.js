@@ -8,6 +8,7 @@ const session = require('express-session');
 const User = require('../models/users');
 const Thread = require('../models/threads');
 const Friendship = require('../models/friendships');
+const Message = require('../models/messages');
 
 router.get('/users', (req, res, next) => {
   User.findAll({ where: req.query, include: [{ all: true }] }).then((users) => res.send(users))
@@ -175,6 +176,20 @@ router.put('/userFriendship/:id', (req, res, next) => {
     return user.addFriend(req.body.friendId)
   })
   .then(res.send.bind(res))
+});
+
+router.post('/thread/:id/newMsg', (req, res, next) => {
+  Message.create({
+    author: req.body.author,
+    msg: req.body.msg,
+    date: req.body.date
+  })
+  .then((message) => {
+    Thread.findOne({ where: { id: req.params.id } })
+    .then((thread) => {
+      thread.addMessage(message)
+    })
+  })
 })
 
 module.exports = router;
