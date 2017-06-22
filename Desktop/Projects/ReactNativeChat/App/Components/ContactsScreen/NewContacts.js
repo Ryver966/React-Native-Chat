@@ -46,7 +46,7 @@ class NewContacts extends Component {
         element.id === user.id
       });
 
-      if(user.username !== store.validUser.username && !isUserFriend) {
+      if(user.username !== store.validUser.username && isUserFriend) {
         return <Contact 
           user={ user } 
           key={ index } 

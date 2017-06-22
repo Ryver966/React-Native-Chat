@@ -15,22 +15,9 @@ import { getUserFriends } from '../../../server/actions/actions';
 import Contact from './Contact';
 
 class ContactsList extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      friendships: []
-    }
-  }
-
-  componentWillMount() {
-    this.setState({ friendships: store.validUser.friends })
-  }
-
   render() {
 
-    const friends = this.state.friendships.map((friend, index) =>
+    const friends = store.validUser.friends.map((friend, index) =>
     {
       return <Contact
         user={ friend }

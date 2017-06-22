@@ -62,10 +62,11 @@ router.post('/users/:id', (req, res, next) => {
     } else {
       User.findOne({ where: { username: req.body.username } })
       .then((checkUserName) => {
-        if(!checkUserName || checkUserName.id === req.params.id) {
+        console.log(checkUserName)
+        if(!checkUserName || checkUserName.username === req.body.username) {
           User.findOne({ where: { email: req.body.email } })
           .then((checkUserEmail) => {
-            if(!checkUserEmail || checkUserEmail.id === req.params.id) {
+            if(!checkUserEmail || checkUserName.email === req.body.email) {
               user.updateAttributes({
                 email: req.body.email,
                 username: req.body.username,
@@ -124,40 +125,10 @@ router.post('/changePassword/:id', (req, res, next) => {
   })
 });
 
-router.post('/newThread', (req, res, next) => {
-  Thread.findOne({ where: { 
-    firstUserId: req.body.firstId,
-    secondUserId: req.body.secondId 
-  } })
-  .then((thread) => {
-    if(!thread) {
-      Thread.findOne({ where: { 
-        firstUserId: req.body.secondId,
-        secondUserId: req.body.firstId
-      } })
-      .then((secondThread) => {
-        if(!secondThread) {
-          Thread.create({
-            firstUserId: req.body.firstId,
-            secondUserId: req.body.secondId
-          }).then(() => {
-            res.send({ msg: 'Success!' })
-          })
-        } else {
-          res.send({ msg: 'This thread exist.' })
-        }
-      })
-    } else {
-      res.send({ msg: 'This thread exist.' })
-    }
-  })
-});
-
-router.get('/getThreads/:id', (req, res, next) => {
-  const threads = [];
-  Thread.findAll({ where: { id: 9 } })
-  .then((threads1) => {
-    
+router.get('/getThreads', (req, res, next) => {
+  Thread.findAll({ where: req.query, include: [{ all: true }] })
+  .then((threads) => {
+    res.send(threads)
     })
   })
 
@@ -190,6 +161,28 @@ router.post('/thread/:id/newMsg', (req, res, next) => {
       thread.addMessage(message)
     })
   })
+});
+
+router.put('/thread', (req, res, next) => {
+  Thread.findOrCreate({
+    where: { chatters: { $contains: [req.body.firstId, req.body.secondId] } },
+    defaults: { chatters: [req.body.firstId, req.body.secondId] }
+ })
+  .spread((thread, createdThread) => {
+    thread.setUsers([req.body.firstId, req.body.secondId])
+  })
+});
+
+router.get('/getUserThreads/:id', (req, res, next) => {
+  Thread.findAll({ 
+    where: { chatters: { $contains: [req.params.id] } },
+    include: [{ all: true }]
+ })
+  .then((threads) => {
+    res.send(threads)
+  })
 })
+
+
 
 module.exports = router;

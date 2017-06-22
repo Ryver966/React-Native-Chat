@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../db_config');
 
 const Message = require('./messages');
+const User = require('./users');
 
 const Thread = sequelize.define('thread', {
   id: {
@@ -9,9 +10,14 @@ const Thread = sequelize.define('thread', {
     primaryKey: true,
     allowNull: false,
     autoIncrement: true
+  },
+  chatters: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER)
   }
 });
 
-Thread.hasMany(Message, { as: 'messages' })
+Thread.hasMany(Message, { as: 'messages' });
+Thread.hasMany(User, {as: 'users'});
+User.belongsToMany(Thread, {through: 'users'})
 
 module.exports = Thread;

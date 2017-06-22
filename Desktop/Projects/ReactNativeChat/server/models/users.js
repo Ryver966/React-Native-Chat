@@ -34,11 +34,13 @@ const User = sequelize.define('user', {
   },
   userId: {
     type: Sequelize.INTEGER
+  },
+  threadId: {
+    type: Sequelize.INTEGER
   }
 });
 
 User.hasMany(User, { as: 'friends' });
-
 
 
 module.exports = User;
