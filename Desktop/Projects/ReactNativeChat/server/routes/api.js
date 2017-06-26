@@ -96,9 +96,11 @@ router.post('/signIn', passport.authenticate('local'),
 );
 
 router.get('/validUser/:id', (req, res, next) => {
-  User.findOne({ where: { id: req.params.id }, include: [{ all: true }] })
+  User.findOne({ where: 
+    { id: req.params.id }, 
+    include: [{ all: true }] 
+  })
   .then((user) => {
-    console.log(user)
     res.send({
       email: user.email,
       username: user.username,
@@ -144,9 +146,8 @@ router.post('/onlineStatus/:id', (req, res, next) => {
 router.put('/userFriendship/:id', (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
   .then((user) => {
-    return user.addFriend(req.body.friendId)
+    user.addFriend(req.body.friendId)
   })
-  .then(res.send.bind(res))
 });
 
 router.post('/thread/:id/newMsg', (req, res, next) => {
@@ -166,10 +167,11 @@ router.post('/thread/:id/newMsg', (req, res, next) => {
 router.put('/thread', (req, res, next) => {
   Thread.findOrCreate({
     where: { chatters: { $contains: [req.body.firstId, req.body.secondId] } },
+    include: [{ all: true }],
     defaults: { chatters: [req.body.firstId, req.body.secondId] }
  })
   .spread((thread, createdThread) => {
-    thread.setUsers([req.body.firstId, req.body.secondId])
+    res.send(thread)
   })
 });
 
@@ -181,8 +183,22 @@ router.get('/getUserThreads/:id', (req, res, next) => {
   .then((threads) => {
     res.send(threads)
   })
+});
+
+router.put('/messageAuthorAvatar', (req, res, next) => {
+  User.findOne({ where: { username: req.body.userName } })
+  .then((user) => {
+    res.send({ avatar: user.avatar })
+  })
+});
+
+router.get('/test/:id', (req, res, next) => {
+  User.findOne({ where: { id: req.params.id } })
+  .then((user) => {
+    console.log(user)
+    const result = user.getFriends();
+    res.send(result)
+  })
 })
-
-
 
 module.exports = router;

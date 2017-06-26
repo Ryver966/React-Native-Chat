@@ -6,12 +6,12 @@ import {
   ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../../mobX/store';
+import { observer } from 'mobx-react';
 
 import TopBtns from '../TopBtns/TopBtns';
 import SearchField from './SearchField';
 import Contact from './Contact';
-import store from '../../mobX/store';
-import { observer } from 'mobx-react';
 
 class NewContacts extends Component {
 
@@ -38,15 +38,13 @@ class NewContacts extends Component {
   }
 
   render() {
-
-    const user = this.state.usersList.map((user, index) =>
+    const users = this.state.usersList.map((user, index) =>
     {
-
       const isUserFriend = store.validUser.friends.find((element) => {
-        element.id === user.id
+        return element.id === user.id
       });
 
-      if(user.username !== store.validUser.username && isUserFriend) {
+      if(user.username !== store.validUser.username && !isUserFriend) {
         return <Contact 
           user={ user } 
           key={ index } 
@@ -54,8 +52,7 @@ class NewContacts extends Component {
           isFriend={ false }
         />
       }
-    }
-    )
+    })
 
     return(
       <View style={ styles.container }>
@@ -71,7 +68,7 @@ class NewContacts extends Component {
             onInputChange={ this.onInputChange }
           />
           <ScrollView>
-            { user }
+            { users }
           </ScrollView>
       </View>
     )

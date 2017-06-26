@@ -3,26 +3,17 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Message extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isUserName: this.props.userNameBoolean,
-      userAvatar: null
-    }
-  }
-
   render() {
-
-    const avatar = this.state.userAvatar ? 
+    const avatar = this.props.avatar ? 
       <Image
-        source={ this.state.userAvatar }
+        source={ this.props.avatar }
+        style={ styles.avatar }
       />
       :
       <Icon
@@ -33,9 +24,9 @@ class Message extends Component {
 
     return(
       <TouchableOpacity style={ [styles.container,
-        this.state.isUserName ? { backgroundColor: '#616161' } : ''] }
+        this.props.isValidUser ? { backgroundColor: '#616161' } : ''] }
       >
-        <View style={[{ flex: 1 }, this.state.isUserName ? { display: 'none' } : ''] }>
+        <View style={[{ flex: 1 }, this.props.isValidUser ? { display: 'none' } : ''] }>
           { avatar }
         </View>
         <View style={{ flex: 9, paddingLeft: 5 }}>
@@ -75,5 +66,10 @@ const styles = StyleSheet.create({
   msgTxt: {
     color: '#fff',
     marginTop: 5
+  },
+  avatar: {
+    width: 35,
+    height: 35,
+    borderRadius: 60
   }
 })

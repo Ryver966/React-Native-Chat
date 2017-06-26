@@ -23,6 +23,7 @@ class ContactsList extends Component {
         user={ friend }
         key={ index }
         isFriend={ true }
+        nav={ this.props.navigator }
       />
     }
     )
@@ -36,9 +37,6 @@ class ContactsList extends Component {
             routesId={ ['contactsList', 'newContacts'] }
           />
         </View>
-        <SearchField 
-          txt={ 'Search Friend' } 
-        />
         <ScrollView>
           { friends }
         </ScrollView>

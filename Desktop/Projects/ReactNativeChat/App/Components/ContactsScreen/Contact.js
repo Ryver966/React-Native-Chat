@@ -9,7 +9,10 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
-import { addFriend } from '../../../server/actions/actions';
+import { 
+  addFriend,
+  gotoThread 
+} from '../../../server/actions/actions';
 
 class Contact extends Component {
 
@@ -17,17 +20,34 @@ class Contact extends Component {
     super(props);
 
     this.getFriend = this.getFriend.bind(this);
+    this.startChat = this.startChat.bind(this);
 
     this.state = {
       isUserAvatar: null
     }
   }
 
+  startChat(firstId, secondId) {
+    gotoThread(firstId, secondId)
+    .then((_thread) => {
+      this.props.nav.push({ 
+        id: 'thread',
+        passProps: {
+          thread: _thread
+        }
+       })
+    })
+    .catch((err) => console.log(err))
+  }
+
   getFriend(id, secondUsrId) {
     addFriend(id, secondUsrId)
     .then(() => {
       addFriend(secondUsrId, id)
-      .then(() => store.setValidUser(store.validUser.id))
+      .then(() => {
+        store.setValidUser(store.validUser.id)
+        this.props.nav.push({ id: 'contactsList' })
+      })
     })
   }
 
@@ -45,7 +65,10 @@ class Contact extends Component {
     />
 
     return(
-      <View style={ styles.container }>
+      <TouchableOpacity 
+        style={ styles.container }
+        onPress={ () => this.props.isFriend ? this.startChat(store.validUser.id, this.props.user.id) : '' }
+      >
         <View style={ styles.avatar }>
           { avatar }
         </View>
@@ -54,7 +77,7 @@ class Contact extends Component {
         </View>
         <TouchableOpacity 
           style={ [styles.addBtn, this.props.isFriend ? { display: 'none' } : ''] }
-          onPress={ () => this.getFriend(store.validUser.id, this.porps.user.id)}>
+          onPress={ () => this.getFriend(store.validUser.id, this.props.user.id) }>
           <Icon
             name='plus'
             size={ 30 }
@@ -74,7 +97,7 @@ class Contact extends Component {
             color='#57AF21'
           />
         </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     )
   }
 }

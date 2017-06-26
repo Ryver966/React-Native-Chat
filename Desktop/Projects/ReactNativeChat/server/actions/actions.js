@@ -102,3 +102,34 @@ export function getUserThreads(id) {
   .then((response) => response.json())
   .catch((err) => console.log(err))
 };
+
+export function gotoThread(_firstId, _secondId) {
+  return fetch(`${ url }thread`, {
+    method: "PUT",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      firstId: _firstId,
+      secondId: _secondId
+    })
+  })
+  .then((response) => response.json())
+  .catch((err) => console.log(err))
+};
+
+export function getMessageAuthorAvatar(_userName) {
+  return fetch(`${ url }messageAuthorAvatar`, {
+    method: "PUT",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userName: _userName
+    })
+  })
+  .then((response) => response.json)
+  .catch((err) => console.log(err))
+};

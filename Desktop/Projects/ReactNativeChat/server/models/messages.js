@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db_config');
 
-const Thread = require('./threads');
-
 const Message = sequelize.define('message', {
   author: {
     type: Sequelize.STRING,

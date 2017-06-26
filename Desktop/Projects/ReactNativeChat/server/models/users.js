@@ -34,9 +34,6 @@ const User = sequelize.define('user', {
   },
   userId: {
     type: Sequelize.INTEGER
-  },
-  threadId: {
-    type: Sequelize.INTEGER
   }
 });
 

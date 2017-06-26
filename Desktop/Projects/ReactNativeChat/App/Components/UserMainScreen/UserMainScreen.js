@@ -15,16 +15,6 @@ import Thread from './Thread';
 export let nav;
 
 class UserMainScreen extends Component {
-
-  componentWillMount() {
-    console.log(store.validUser)
-    getUserThreads(store.validUser.id)
-    .then((threads) => {
-      console.log(threads)
-    })
-    .catch((err) => console.log(err))
-  }
-
   render() {
     nav = this.props.navigator;
     return(

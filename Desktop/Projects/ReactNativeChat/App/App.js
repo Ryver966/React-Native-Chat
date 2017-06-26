@@ -68,6 +68,7 @@ class App extends Component {
     .then((val) => {
       if(val) {
         store.token = val
+        store.setIsUserLogged()
         store.setValidUser(val)
       } else {
         store.setValidUser()
@@ -104,7 +105,10 @@ class App extends Component {
       case 'editUserProfile':
       return <EditUserProfile navigator={ navigator } />
       case 'thread':
-      return <ThreadView navigator={ navigator } />
+      return <ThreadView 
+        navigator={ navigator }
+        {...route.passProps}
+      />
       case 'changePassword':
       return <ChangePassword navigator={ navigator } />
     }
@@ -118,7 +122,7 @@ class App extends Component {
             <LoadingScreen />
           </View>
         )
-      } else if(!store.isLoading && store.validUser) {
+      } else if(!store.isLoading && store.isUserLoggedIn) {
         return(
           <View style={ styles.container }>
             <StatusBar

@@ -17,7 +17,5 @@ const Thread = sequelize.define('thread', {
 });
 
 Thread.hasMany(Message, { as: 'messages' });
-Thread.hasMany(User, {as: 'users'});
-User.belongsToMany(Thread, {through: 'users'})
 
 module.exports = Thread;

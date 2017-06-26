@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
+import { getMessageAuthorAvatar } from '../../../server/actions/actions';
 
 import Message from './Message';
 
@@ -20,9 +21,11 @@ class ThreadView extends Component {
     super(props);
 
     this.sendMsg = this.sendMsg.bind(this);
+    this.setAvatar = this.setAvatar.bind(this);
 
     this.state = {
-      msgTxt: null
+      msgTxt: null,
+      authorAvatar: null
     }
   }
   componentWillMount() {
@@ -32,6 +35,13 @@ class ThreadView extends Component {
   componentWillUnmount() {
     store.isBottombarVisible = true
     store.isTopBarArrowVisible = false
+  }
+
+  setAvatar(username) {
+    getMessageAuthorAvatar(username)
+      .then((response) => {
+        return reponse.avatar
+      })
   }
 
   sendMsg(_userName, _msg) {
@@ -47,17 +57,21 @@ class ThreadView extends Component {
   }
 
   render() {
-    const userName = 'Test User';
+    const messages = this.props.thread.messages.map((message, index) => {
+
+      return <Message 
+        key={ index }
+        name={ message.author }
+        date={ message.createdAt }
+        msg={ message.msg }
+        isValidUser={ message.author == store.validUser.username ? false : false }
+        avatar={ null }
+      />
+    })
     return(
       <View style={{ flex: 1, paddingTop: 10 }}>
         <ScrollView style={{ flex: 1, marginBottom: 20 }}>
-          <Message
-            navigator={ this.props.navigator }
-            userNameBoolean={ false }
-            name='John Doe'
-            date='15.12.2016'
-            msg='asdasdasdadsadsasdazxczxcasdxzcas'
-          />
+          { messages }
         </ScrollView>
         <View style={ styles.inputContainer }>
           <TextInput
@@ -69,7 +83,7 @@ class ThreadView extends Component {
         />
         <TouchableOpacity 
           style={ styles.sendMsgBtn }
-          onPress ={ () => this.sendMsg(userName, this.state.msgTxt) }
+          onPress ={ () => this.sendMsg(store.validUser.username, this.state.msgTxt) }
         >
             <Icon
               name='envelope'
