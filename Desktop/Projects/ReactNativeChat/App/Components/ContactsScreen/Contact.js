@@ -46,7 +46,6 @@ class Contact extends Component {
       addFriend(secondUsrId, id)
       .then(() => {
         store.setValidUser(store.validUser.id)
-        this.props.nav.push({ id: 'contactsList' })
       })
     })
   }
@@ -90,7 +89,7 @@ class Contact extends Component {
             this.props.isFriend ? '' : { display: 'none' },
             this.props.user.onlineStatus ? '' : { display: 'none' }
           ] }
-          onPress={ () => addFriend(store.validUser.id, this.props.user.id).then((res) => console.log(res)) }>
+          onPress={ () => this.getFriend(store.validUser.id, this.props.user.id).then((res) => console.log(res)) }>
           <Icon
             name='circle'
             size={ 15 }

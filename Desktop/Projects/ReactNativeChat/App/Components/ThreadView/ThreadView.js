@@ -11,7 +11,10 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import store from '../../mobX/store';
 import { observer } from 'mobx-react';
-import { getMessageAuthorAvatar } from '../../../server/actions/actions';
+import { 
+  getThreadMessages,
+  createMessage
+} from '../../../server/actions/actions';
 
 import Message from './Message';
 
@@ -21,14 +24,19 @@ class ThreadView extends Component {
     super(props);
 
     this.sendMsg = this.sendMsg.bind(this);
-    this.setAvatar = this.setAvatar.bind(this);
 
     this.state = {
       msgTxt: null,
-      authorAvatar: null
+      threadMessages: []
     }
   }
   componentWillMount() {
+    getThreadMessages(this.props.thread.id)
+    .then((messages) => {
+      this.setState({ threadMessages: messages })
+    })
+    .catch((err) => console.log(err))
+    
     store.isBottombarVisible = false
     store.isTopBarArrowVisible = true
   }
@@ -37,35 +45,27 @@ class ThreadView extends Component {
     store.isTopBarArrowVisible = false
   }
 
-  setAvatar(username) {
-    getMessageAuthorAvatar(username)
-      .then((response) => {
-        return reponse.avatar
-      })
-  }
-
   sendMsg(_userName, _msg) {
     if(_msg) {
-      console.log({ 
-        userName: _userName, 
-        msg: _msg 
+      createMessage(this.props.thread.id, { 
+        msg: _msg,
+        author: store.validUser.id
       })
-      this.setState({ msgTxt: null })
+      .then(() => {
+        this.setState({ msgTxt: null })
+      })
+      .catch((err) => console.log(err))
     } else {
       Alert.alert('Type some message, please.')
     }
   }
 
   render() {
-    const messages = this.props.thread.messages.map((message, index) => {
-
+    const messages = this.state.threadMessages.map((message, index) => {
       return <Message 
         key={ index }
-        name={ message.author }
-        date={ message.createdAt }
-        msg={ message.msg }
-        isValidUser={ message.author == store.validUser.username ? false : false }
-        avatar={ null }
+        message={ message }
+        isValidUser={ message.author.username == store.validUser.username ? true : false }
       />
     })
     return(

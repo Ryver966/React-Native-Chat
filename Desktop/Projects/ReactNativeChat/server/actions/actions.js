@@ -119,16 +119,26 @@ export function gotoThread(_firstId, _secondId) {
   .catch((err) => console.log(err))
 };
 
-export function getMessageAuthorAvatar(_userName) {
-  return fetch(`${ url }messageAuthorAvatar`, {
-    method: "PUT",
+export function getThreadMessages(threadId) {
+  return fetch(`${ url }getThreadMessages/${ threadId }`, {
+    method: "GET",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then((response) => response.json())
+  .catch((err) => console.log(err))
+};
+
+export function createMessage(threadId, msgObject) {
+  return fetch(`${ url }thread/${ threadId }/newMsg`, {
+    method: "POST",
     headers: {
       'Accept': 'application.json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      userName: _userName
-    })
+    body: JSON.stringify(msgObject)
   })
   .then((response) => response.json)
   .catch((err) => console.log(err))

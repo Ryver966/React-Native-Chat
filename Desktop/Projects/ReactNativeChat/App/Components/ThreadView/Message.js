@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Message extends Component {
   render() {
-    const avatar = this.props.avatar ? 
+    const avatar = this.props.message.author.avatar ? 
       <Image
         source={ this.props.avatar }
         style={ styles.avatar }
@@ -31,10 +31,10 @@ class Message extends Component {
         </View>
         <View style={{ flex: 9, paddingLeft: 5 }}>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={ styles.name }>{ this.props.name }</Text>
-            <Text style={ styles.date }>{ this.props.date }</Text>
+            <Text style={ styles.name }>{ this.props.message.author.username }</Text>
+            <Text style={ styles.date }>{ this.props.message.createdAt.substring(0, 10) }</Text>
           </View>
-          <Text style={ styles.msgTxt }>{ this.props.msg }</Text>
+          <Text style={ styles.msgTxt }>{ this.props.message.msg }</Text>
         </View>
       </TouchableOpacity>
     )

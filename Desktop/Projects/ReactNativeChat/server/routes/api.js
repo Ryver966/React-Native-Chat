@@ -13,6 +13,9 @@ const Message = require('../models/messages');
 router.get('/users', (req, res, next) => {
   User.findAll({ where: req.query, include: [{ all: true }] }).then((users) => res.send(users))
 });
+router.get('/msgss', (req, res, next) => {
+  Message.findAll({ where: req.query, include: [{ all: true }] }).then((users) => res.send(users))
+});
 
 router.post('/signUp', (req, res, next) => {
 
@@ -127,10 +130,10 @@ router.post('/changePassword/:id', (req, res, next) => {
   })
 });
 
-router.get('/getThreads', (req, res, next) => {
-  Thread.findAll({ where: req.query, include: [{ all: true }] })
-  .then((threads) => {
-    res.send(threads)
+router.get('/getThreadMessages/:id', (req, res, next) => {
+  Message.findAll({ where: { threadId: req.params.id }, include: [{ all: true }] })
+  .then((messages) => {
+    res.send(messages)
     })
   })
 
@@ -152,9 +155,8 @@ router.put('/userFriendship/:id', (req, res, next) => {
 
 router.post('/thread/:id/newMsg', (req, res, next) => {
   Message.create({
-    author: req.body.author,
     msg: req.body.msg,
-    date: req.body.date
+    authorId: req.body.author
   })
   .then((message) => {
     Thread.findOne({ where: { id: req.params.id } })

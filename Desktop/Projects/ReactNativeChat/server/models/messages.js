@@ -1,23 +1,21 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db_config');
 
+const User = require('./users');
+
 const Message = sequelize.define('message', {
-  author: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
   msg: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  date: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
   threadId: {
+    type: Sequelize.INTEGER
+  },
+  authorId: {
     type: Sequelize.INTEGER
   }
 });
 
+Message.belongsTo(User, { as: 'author' })
 
 module.exports = Message;
