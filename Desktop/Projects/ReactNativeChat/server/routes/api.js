@@ -168,18 +168,18 @@ router.post('/thread/:id/newMsg', (req, res, next) => {
 
 router.put('/thread', (req, res, next) => {
   Thread.findOrCreate({
-    where: { chatters: { $contains: [req.body.firstId, req.body.secondId] } },
+    where: { chatters: { $contains: [req.body.firstName, req.body.secondName] } },
     include: [{ all: true }],
-    defaults: { chatters: [req.body.firstId, req.body.secondId] }
+    defaults: { chatters: [req.body.firstName, req.body.secondName] }
  })
   .spread((thread, createdThread) => {
     res.send(thread)
   })
 });
 
-router.get('/getUserThreads/:id', (req, res, next) => {
+router.get('/getUserThreads/:name', (req, res, next) => {
   Thread.findAll({ 
-    where: { chatters: { $contains: [req.params.id] } },
+    where: { chatters: { $contains: [req.params.name] } },
     include: [{ all: true }]
  })
   .then((threads) => {

@@ -12,7 +12,7 @@ const Thread = sequelize.define('thread', {
     autoIncrement: true
   },
   chatters: {
-    type: Sequelize.ARRAY(Sequelize.INTEGER)
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   }
 });
 

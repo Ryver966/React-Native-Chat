@@ -1,8 +1,5 @@
 import { extendObservable } from 'mobx';
-import { 
-  getValidUser,
-  getUserThreads 
-} from '../../server/actions/actions';
+import { getValidUser } from '../../server/actions/actions';
 import { AsyncStorage } from 'react-native'
 
 export class Store {
@@ -18,8 +15,7 @@ export class Store {
       soundsSetting: false,
       vibrateSetting: false,
       notificationsSetting: false,
-      locationSetting: false,
-      userThreads: []
+      locationSetting: false
     })
   }
 
@@ -30,8 +26,7 @@ export class Store {
         AsyncStorage.setItem('settings', JSON.stringify({
           sounds: true,
           vibrate: true,
-          notifications: true,
-          location: true
+          notifications: true
         }))
       } else {
         const res = JSON.parse(result);
@@ -48,9 +43,6 @@ export class Store {
   setIsUserLogged() {
     if(this.token) {
       this.isUserLoggedIn = true
-      getUserThreads(this.token).then((threads) => {
-        console.log(threads)
-      })
     } else {
       this.isLoading = false
     }

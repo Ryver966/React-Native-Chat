@@ -55,12 +55,6 @@ class UserProfile extends Component {
             txt='Change Password'
             routeId='changePassword'
           />
-          <UserOption
-            navigator={ this.props.navigator }
-            name='question'
-            txt='Help'
-            routeId='test'
-          />
         </ScrollView>
         <TouchableOpacity
           style={ styles.btn }

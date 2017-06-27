@@ -41,13 +41,6 @@ class SettingsScreen extends Component {
             state={ store.notificationsSetting }
             storageContainer='notifications'
           />
-          <Setting
-            name='map-marker'
-            txt='Your Location'
-            state={ store.locationSetting }
-            storageContainer='location'
-
-          />
         </ScrollView>
       </View>
     )

@@ -90,8 +90,8 @@ export function changeOnlineStatus(id) {
   .catch((err) => console.log(err))
 };
 
-export function getUserThreads(id) {
-  return fetch(`${ url }getUserThreads/${ id }`, {
+export function getUserThreads(name) {
+  return fetch(`${ url }getUserThreads/${ name }`, {
     method: "GET",
     headers: {
       'Accept': 'application.json',
@@ -103,7 +103,7 @@ export function getUserThreads(id) {
   .catch((err) => console.log(err))
 };
 
-export function gotoThread(_firstId, _secondId) {
+export function gotoThread(_firstName, _secondName) {
   return fetch(`${ url }thread`, {
     method: "PUT",
     headers: {
@@ -111,8 +111,8 @@ export function gotoThread(_firstId, _secondId) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      firstId: _firstId,
-      secondId: _secondId
+      firstName: _firstName,
+      secondName: _secondName
     })
   })
   .then((response) => response.json())

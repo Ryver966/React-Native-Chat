@@ -27,8 +27,8 @@ class Contact extends Component {
     }
   }
 
-  startChat(firstId, secondId) {
-    gotoThread(firstId, secondId)
+  startChat(firstName, secondName) {
+    gotoThread(firstName, secondName)
     .then((_thread) => {
       this.props.nav.push({ 
         id: 'thread',
@@ -66,7 +66,7 @@ class Contact extends Component {
     return(
       <TouchableOpacity 
         style={ styles.container }
-        onPress={ () => this.props.isFriend ? this.startChat(store.validUser.id, this.props.user.id) : '' }
+        onPress={ () => this.props.isFriend ? this.startChat(store.validUser.username, this.props.user.username) : '' }
       >
         <View style={ styles.avatar }>
           { avatar }
@@ -89,7 +89,7 @@ class Contact extends Component {
             this.props.isFriend ? '' : { display: 'none' },
             this.props.user.onlineStatus ? '' : { display: 'none' }
           ] }
-          onPress={ () => this.getFriend(store.validUser.id, this.props.user.id).then((res) => console.log(res)) }>
+        >
           <Icon
             name='circle'
             size={ 15 }
