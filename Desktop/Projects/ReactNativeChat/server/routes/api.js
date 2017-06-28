@@ -162,6 +162,7 @@ router.post('/thread/:id/newMsg', (req, res, next) => {
     Thread.findOne({ where: { id: req.params.id } })
     .then((thread) => {
       thread.addMessage(message)
+      res.send('success')
     })
   })
 });

@@ -25,10 +25,12 @@ class UserMainScreen extends Component {
   }
 
   componentWillMount() {
-    getUserThreads(store.validUser.username)
+    if(store.validUser) {
+      getUserThreads(store.validUser.username)
     .then((threads) => {
       this.setState({ userThreads: threads })
     })
+    }
   }
 
   render() {

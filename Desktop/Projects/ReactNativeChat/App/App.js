@@ -16,6 +16,7 @@ import store from './mobX/store';
 import { observer } from 'mobx-react';
 import PushNotificationController from './Components/PushNotificationController/PushNotificationController';
 import PushNotification from 'react-native-push-notification';
+import io from 'socket.io-client';
 
 import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
@@ -43,19 +44,27 @@ class App extends Component {
   }
 
   handleAppState(currentState){
+    
+
     if(currentState === 'background') { 
-      AsyncStorage.getItem('token').then((result) => {
+      AsyncStorage.getItem('token')
+      .then((result) => {
         changeOnlineStatus(result)
       })
-      PushNotification.localNotification({
-        message: 'Test msg. Asd zxc, zxc asd.',
-        number: 1,
-        playSound: store.soundsSetting,
-        vibrate: store.vibrateSetting,
-        vibration: 300
+      socket.on('newMsgNotification', (data) => {
+        if(data.threadChatters.indexOf(store.validUser.username) > -1) {
+          PushNotification.localNotification({
+            message: "You've got new message!",
+            number: 1,
+            playSound: store.soundsSetting,
+            vibrate: store.vibrateSetting,
+            vibration: 300
+          })
+        }
       })
     } else if(currentState === 'active') {
-      AsyncStorage.getItem('token').then((result) => {
+      AsyncStorage.getItem('token')
+      .then((result) => {
         changeOnlineStatus(result)
       })
     }

@@ -41,12 +41,24 @@ export function editProfile(userId, editedUser) {
 };
 
 export function getUsers() {
-  return fetch(`${url}users`)
+  return fetch(`${url}users`, {
+    method: "GET",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    }
+  })
   .then((res) => res.json())
   .catch((err) => console.log(err))
 };
 export function getValidUser(id) {
-  return fetch(`${url}validUser/${ id }`)
+  return fetch(`${url}validUser/${ id }`, {
+    method: "GET",
+    headers: {
+      'Accept': 'application.json',
+      'Content-Type': 'application/json'
+    }
+  })
   .then((res) => res.json())
   .catch((err) => console.log(err))
 };

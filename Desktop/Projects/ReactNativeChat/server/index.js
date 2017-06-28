@@ -9,6 +9,7 @@ const cons = require('consolidate');
 const pg = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/users');
+const socket = require('socket.io');
 
 const app = express();
 
@@ -56,8 +57,20 @@ app.use((err, req, res, next) => {
   res.status(422).send({ error: err.message })
 })
 
-app.listen(4050, () => {
-  console.log('now listening');
+const io = socket(
+  app.listen(4050, () => {
+    console.log('now listening');
+  })
+)
+
+io.on('connection', (socket) => {
+  console.log('made socket connection', socket.id)
+
+  socket.on('message', (data) => {
+    console.log(data)
+    io.sockets.emit('message', 'success')
+    io.sockets.emit('newMsgNotification', data)
+  })
 })
 
 app.use(flash())

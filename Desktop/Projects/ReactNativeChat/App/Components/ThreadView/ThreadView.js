@@ -15,6 +15,7 @@ import {
   getThreadMessages,
   createMessage
 } from '../../../server/actions/actions';
+import io from 'socket.io-client';
 
 import Message from './Message';
 
@@ -46,12 +47,25 @@ class ThreadView extends Component {
   }
 
   sendMsg(_userName, _msg) {
+    const socket = io.connect('http://localhost:4050');
+
     if(_msg) {
       createMessage(this.props.thread.id, { 
         msg: _msg,
         author: store.validUser.id
       })
       .then(() => {
+        socket.emit('message', { threadChatters: this.props.thread.chatters })
+        socket.on('message', (data) => {
+
+          getThreadMessages(this.props.thread.id)
+          .then((messages) => {
+            this.setState({ threadMessages: messages })
+            
+          })
+          .catch((err) => console.log(err))
+
+        })
         this.setState({ msgTxt: null })
       })
       .catch((err) => console.log(err))
