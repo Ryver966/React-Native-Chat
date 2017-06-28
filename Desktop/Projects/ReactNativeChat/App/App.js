@@ -18,6 +18,8 @@ import PushNotificationController from './Components/PushNotificationController/
 import PushNotification from 'react-native-push-notification';
 import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:4050');
+
 import SignInScreen from './Components/SignInScreen/SignInScreen';
 import SignUpScreen from './Components/SignUpScreen/SignUpScreen';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
@@ -50,6 +52,13 @@ class App extends Component {
       AsyncStorage.getItem('token')
       .then((result) => {
         changeOnlineStatus(result)
+        .then(() => {
+          socket.emit('changeOnlineStatus', 'online status')
+          socket.on('changeOnlineStatus', (data) => {
+            getUsers().then((res) => store.allUsers = res);
+          })
+        })
+        .catch((err) => console.log(err))
       })
       socket.on('newMsgNotification', (data) => {
         if(data.threadChatters.indexOf(store.validUser.username) > -1) {
@@ -66,6 +75,13 @@ class App extends Component {
       AsyncStorage.getItem('token')
       .then((result) => {
         changeOnlineStatus(result)
+        .then(() => {
+          socket.emit('changeOnlineStatus', 'online status')
+          socket.on('changeOnlineStatus', (data) => {
+            getUsers().then((res) => store.allUsers = res);
+          })
+        })
+        .catch((err) => console.log(err))
       })
     }
   }

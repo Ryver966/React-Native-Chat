@@ -67,9 +67,12 @@ io.on('connection', (socket) => {
   console.log('made socket connection', socket.id)
 
   socket.on('message', (data) => {
-    console.log(data)
     io.sockets.emit('message', 'success')
     io.sockets.emit('newMsgNotification', data)
+  })
+
+  socket.on('changeOnlineStatus', (data) => {
+    io.sockets.emit('changeOnlineStatus', 'success')
   })
 })
 
